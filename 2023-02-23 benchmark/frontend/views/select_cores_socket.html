@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark CPU 🖥🖥️</title>
+
+    <style>
+        :root {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+        }
+
+        #tDivSockets {
+            width: fit-content;
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 0.25rem;            
+        }
+
+        button {
+            font-size: inherit;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <span id="tSpnFullname"></span>
+        <span id="tSpnDirection"></span>
+    
+        <h1>Benchmark CPU 🖥🖥️</h1>
+    </header>
+
+    <h2>Selecciona criterios de búsqueda</h2>
+
+    <br>
+    <label>Número de núcleos del procesador: </label>
+    <select id="tSelCores" size="3">
+        <option value="4">4 nucleos</option>
+        <option value="6">6 nucleos</option>
+        <option value="8">8 nucleos</option>
+    </select>
+
+    <br><br>
+    <label>Zócalos a incluir en la comparativa: </label>
+    <div id="tDivSockets"></div>
+
+    <br><br>
+    <button type="button" id="tButSocketSelected">Ir a comparar procesadores</button>
+
+
+    <script type="module">
+        import { openSpinner, closeSpinner } from './spinner.lib.js';
+        import { showUserFullnameAndDirection } from './utils.js';
+        import BenchmarkService from '../services/BenchmarkService.js';
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            const token = getAndValidateToken()
+            showUserFullnameAndDirection(token);
+            setuptSocketAndCoreSelectedButton();
+            
+            try {
+                openSpinner();
+                const sockets = await retrieveSockets(token);
+                renderSockets(sockets);
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                closeSpinner();
+            }
+        });
+        
+        
+        function getAndValidateToken() {
+            const token = window.sessionStorage.getItem('token-benchmark');
+            if (!token) {
+                alert('El usuario no ha sido autenticado.');
+                window.location.href = './index.htm';
+            }
+            return token;
+        }
+        
+
+        function setuptSocketAndCoreSelectedButton() {
+            const nButton = document.querySelector('#tButSocketSelected');
+            nButton.addEventListener('click', navigateToProcessorsSelectionPage);
+        }
+
+
+        function navigateToProcessorsSelectionPage() {
+            const nSelectedSocketCheckboxes = document.querySelectorAll('input[data-type="socket"]:checked');
+
+            let sockets;
+            for (const nCheckbox of nSelectedSocketCheckboxes) {
+                if (!sockets)
+                    sockets = nCheckbox.value;
+                else
+                    sockets += ',' + nCheckbox.value;
+            }
+
+            // sessionStorage.setItem('socket_id', socketId);
+            // sessionStorage.setItem('socket_nombre', nSelectedSocketCheckboxes.dataset.nombre);
+
+            const nSelectCores = document.querySelector('select#tSelCores');
+            const coreId = nSelectCores.value;
+            // sessionStorage.setItem('core_id', coreId);
+            // sessionStorage.setItem('core_nombre', nRadSelectedCore.dataset.nombre);
+
+            window.location = `./compare_processors.html?sockets=${sockets}&cores=${coreId}`;
+        }
+
+        
+        async function retrieveSockets(token) {
+            const service = new BenchmarkService();
+            const sockets = await service.retrieveSockets(token);
+            return sockets;
+        }
+        
+
+        function renderSockets(sockets) {
+            const nDivSockets = document.querySelector('#tDivSockets');
+            sockets.forEach(socket => {
+                const nCheckbox = document.createElement('input');
+                nCheckbox.setAttribute('type','checkbox');
+                nCheckbox.setAttribute('id', `tChk${socket.id}`);
+                nCheckbox.setAttribute('value', socket.id);
+                nCheckbox.setAttribute('data-type', 'socket');
+                nDivSockets.appendChild(nCheckbox);
+
+                const nLabel = document.createElement('label');
+                nLabel.textContent = socket.name;
+                nLabel.setAttribute('for', `tChk${socket.id}`);
+                nDivSockets.appendChild(nLabel);
+            });
+        }
+
+    </script>
+</body>
+</html>

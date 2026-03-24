@@ -1,0 +1,12 @@
+
+### 
+POST 
+content-type: application/x-www-form-urlencoded
+
+username=
+&password=
+
+### 
+
+GET 
+Authorization: Bearer 

@@ -1,0 +1,161 @@
+
+    
+function decodeToken(token) {
+    const parseJwt = token => {
+        try {
+            return JSON.parse(atob(token.split('.')[1]));
+        } catch (error) {
+            throw new Error(`Problem decoding token "${token}": ${error.message}.`);
+        }
+    }
+    const tokenDecodificado = parseJwt(token);
+    return tokenDecodificado;
+}
+
+------------------------------------------------------------------------------------------------------
+const url = '';
+
+let response;
+try {
+    response = await fetch(url, { 
+        method: 'post', 
+        headers: {
+            'content-type': 'application/json',
+            'accept': 'application/json'
+        }, 
+        body: JSON.stringify({ username, password }) 
+    });
+} catch (error) {
+    throw new Error(`Cannot validate user: ${error}`);
+}
+
+// Comprueba si el fetch fue correcto
+if (!response.ok) {
+    throw new Error(`Cannot validate user: [${response.status} ${response.statusText}]`);
+}
+
+// Comprueba si estoy recibiendo JSON
+let data;
+try {
+    data = await response.json();
+} catch (error) {
+    throw new Error(`Cannot validate user: ${error}`);
+}
+
+// Comprueba si el data es correcto
+if (!data.ok) {
+    throw new Error(`Cannot validate user: ${data.message}`);
+}
+
+return data.;
+
+------------------------------------------------------------------------------------------------------
+const url = '';
+
+// Comprueba si el servidor está encendido
+let response;
+try {
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    response = await fetch(url, { 
+        method: 'get', 
+        headers 
+    });
+} catch (error) {
+    throw new Error(`Cannot retrieve series: ${error}`);
+}
+
+// Comprueba si el fetch fue correcto
+if (!response.ok) {
+    throw new Error(`Cannot retrieve series: [${response.status} ${response.statusText}]`);
+}
+
+// Comprueba si estoy recibiendo JSON
+let data;
+try {
+    data = await response.json();
+} catch (error) {
+    throw new Error(`Cannot retrieve series: ${error}`);
+}
+
+// Comprueba si el data es correcto
+if (!data.ok) {
+    throw new Error(`Cannot retrieve series: ${data.message}`);
+}
+
+return data.;
+
+------------------------------------------------------------------------------------------------------
+window.sessionStorage.setItem('token', token);
+const token = window.sessionStorage.getItem('token');
+
+------------------------------------------------------------------------------------------------------
+window.location = '/view/index.html';
+
+------------------------------------------------------------------------------------------------------
+const params = new URLSearchParams(window.location.search);
+const serieUuid = params.get('serie');
+return serieUuid;
+
+------------------------------------------------------------------------------------------------------
+import PlaymobilService from '../services/PlaymobilService.js';
+
+export default class TableBoxesComponent extends HTMLElement {
+    #service;
+    #shadowRoot;
+    #template = `
+        <style>
+        </style>
+    `;
+    #serie;
+
+    get serie() {
+        return this.#serie;
+    }
+
+    set serie(value) {
+        this.#serie = value;
+        // this.#retrieveBoxesAndFillTable().then();
+    }
+
+    constructor() {
+        super();
+
+        this.#shadowRoot = this.attachShadow({ mode: 'open' });
+        this.#shadowRoot.innerHTML = this.#template;
+
+        this.#service = new PlaymobilService();
+    }
+
+    async connectedCallback() {
+        // await this.#retrieveBoxesAndFillTable();
+    }
+
+
+    static get observedAttributes() {
+        return ['serie'];
+    }
+
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'serie') {
+            this.serie = newValue;
+        }
+    }
+
+
+    async #retrieveBoxesAndFillTable() {
+    }
+
+
+    #dispatchTableFillingCompleted() {
+        const event = new CustomEvent('fillingcompleted', { detail: { serie: this.#serie }});
+        this.dispatchEvent(event);
+    }
+
+}
+
+
+window.customElements.define('table-boxes', TableBoxesComponent);

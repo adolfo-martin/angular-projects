@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelsBooking 🚌</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .error-dialog {
+            width: 50%;
+            border: solid 10px red;
+            border-radius: 20px;
+            padding: 1rem;
+        }
+
+        .error-dialog__title {
+            color: red;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        .error-dialog__message {
+            font-size: 1.5rem;
+        }
+    </style>
+
+    <script type="module">
+        import TravelsService from '../services/TravelsService.js';
+        import { showUserFullname } from './utils.js';
+        import { openSpinner, closeSpinner } from './spinner.lib.js';
+
+
+        document.addEventListener('DOMContentLoaded', setup);
+
+
+        async function setup(e) {
+            window.sessionStorage.setItem('token-travelsbooking', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs');
+            const token = window.sessionStorage.getItem('token-travelsbooking');
+            if (!token) {
+                alert('El usuario no ha sido autenticado.');
+                window.location.href = './index.html';
+            }
+
+            showUserFullname();
+            showDepartureAirporOnSubtitle(token);
+            setuptCitySelectedButton();
+            await retrieveAndShowCities(token);
+        }
+
+
+        async function showDepartureAirporOnSubtitle(token) {
+            const departureCity = getDepartureCityFromLocalStorage();
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const city = await service.retrieveCityByUuid(departureCity, token);
+                closeSpinner();
+                document.querySelector('#tSpnDepartureCity').textContent = city.nombre;
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+                return;
+            }
+        }
+
+
+        function getDepartureCityFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const departureCity = params.get('ciudad-salida');
+            if (!departureCity) {
+                alert('Falta la ciudad de salida en la URL.');
+                window.location = './index.htm';
+            }
+
+            return departureCity;
+        }
+
+
+        function getDepartureCityFromLocalStorage() {
+            const departureCity = window.sessionStorage.getItem('ciudad-salida');
+            if (!departureCity) {
+                alert('Falta la ciudad de salida en el Storage.');
+                window.location = './index.htm';
+            }
+
+            return departureCity;
+        }
+
+
+        async function retrieveAndShowCities(token) {
+            const departureCity = getDepartureCityFromUrl();
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const cities = await service.retrieveArrivalCitiesByDepartureCity(departureCity, token);
+                closeSpinner();
+                await showCities(cities);
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+                return;
+            }
+        }
+
+
+        function showCities(cities) {
+            const nSelect = document.querySelector('#tSelCity');
+            nSelect.setAttribute('size', cities.length);
+
+            nSelect.addEventListener('change', updateButtonGoToTravelSetup);
+
+            cities.forEach(createOption);
+
+            function createOption(city) {
+                const nOption = document.createElement('option');
+                nSelect.appendChild(nOption);
+                nOption.setAttribute('value', city.uuid);
+
+                const nText = document.createTextNode(`${city.nombre} (${city.uuid})`);
+                nOption.appendChild(nText);
+            }
+        }
+
+
+        async function updateButtonGoToTravelSetup(e) {            
+            try {
+                openSpinner();
+                const token = window.sessionStorage.getItem('token-travelsbooking');
+                const service = new TravelsService();
+
+                const departureCityUuid = getDepartureCityFromLocalStorage();
+                const departureCity = await service.retrieveCityByUuid(departureCityUuid, token);
+
+                const arrivalCityUuid = e.target.value;
+                const arrivalCity = await service.retrieveCityByUuid(arrivalCityUuid, token);
+                
+                const nButton = document.querySelector('#tButCitySelected');
+                nButton.textContent = `Ir a configurar trayecto desde ${departureCity.nombre} hasta ${arrivalCity.nombre}`;
+            } catch (error) {
+                alert(`No se ha podido recuperar la ciudad: ${error.message}. Por favor, refresque la pantalla.`);
+            } finally {
+                closeSpinner();
+            }
+        }
+
+
+        function setuptCitySelectedButton() {
+            const nButton = document.querySelector('#tButCitySelected');
+            nButton.addEventListener('click', navigateToTravelSetupPage);
+        }
+
+
+        function navigateToTravelSetupPage() {
+            const departureCity = getDepartureCityFromUrl();
+
+            const nSelect = document.querySelector('#tSelCity');
+            const arrivalCity = nSelect.value;
+
+            sessionStorage.setItem('ciudad-llegada', arrivalCity);
+
+            window.location = `./configurar-trayecto.html?ciudad-salida=${departureCity}&ciudad-llegada=${arrivalCity}`;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="tSpnFullname" style="display: none"></span>
+        <h1>TravelsBooking 🚌</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.htm">Inicio</a></li>
+            <li><a href="./elegir_ciudad-salida.html">Ciudades de salida</a></li>
+        </ul>
+    </nav>
+
+    <h2>Ciudades de llegada con salida desde <span id="tSpnDepartureCity"></span></h2>
+
+    <label>Seleccione la ciudad de llegada del viaje:</label>
+    <br>
+    <select id="tSelCity"></select>
+
+    <br><br><br>
+    <button id="tButCitySelected">Debe elegir la ciudad de llegada</button>
+</body>
+
+</html>

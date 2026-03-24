@@ -1,0 +1,11 @@
+<div #container class="flex flex-col gap-2">
+    @let pokemons2 = pokemons();
+    
+    @if (pokemons2) {
+        @for (pokemon of pokemons2; track $index) {
+            <card-pokemon #cardPokemon [pokemon-id]="pokemon.id" [pokemon-name]="pokemon.name"></card-pokemon>
+        }
+    } @else {
+        <div>Espere, por favor ...</div>
+    }
+</div>

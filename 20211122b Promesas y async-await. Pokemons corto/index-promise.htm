@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ol id="tOlPokemons"></ol>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', retrieveAndShowPokemons);
+
+        function retrieveAndShowPokemons(_) {
+            retrievePokemonsP()
+                .then(showPokemons)
+                .catch(console.error);
+        }
+
+        function retrievePokemonsP() {
+            return fetch('https://pokeapi.co/api/v2/pokemon')
+                .then(response => response.json())
+                .then(data => data.results)
+                .catch(console.error);
+        }
+
+        function showPokemons(pokemons) {
+            const nOl = document.querySelector('#tOlPokemons');
+
+            pokemons
+                .forEach(({name}) => {
+                    const nLi = document.createElement('li');
+                    nOl.appendChild(nLi);
+
+                    const nText = document.createTextNode(name)
+                    nLi.appendChild(nText)
+                })
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+### Validates right username and password
+POST http://127.0.0.1:3001/api/authentication/validate_user
+content-type: application/x-www-form-urlencoded
+
+username=sonia.silverado
+&password=s
+
+### 
+
+GET http://127.0.0.1:3002/api/viajes/ciudades
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs
+
+### 
+
+GET http://127.0.0.1:3002/api/viajes/ciudad/MUR
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs
+
+### 
+
+GET http://127.0.0.1:3002/api/viajes/ciudades-llegada/ciudad-salida/MUR
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs
+
+### 
+
+GET http://127.0.0.1:3002/api/viajes/trayecto/ciudad-salida/MUR/ciudad-llegada/VIG
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pokeapi": {
+      "command": "python",
+      "args": ["C://Users//adolfo//Desktop//2025-06-02 MCP Pokemon//pokeapi_mcp_server.py"],
+      "env": {
+        "PYTHONPATH": "C://Users//adolfo//AppData//Local//Programs//Python//Python310"
+      }
+    }
+  }
+}

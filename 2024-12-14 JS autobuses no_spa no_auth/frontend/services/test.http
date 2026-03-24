@@ -1,0 +1,34 @@
+
+### Validates right username and password
+POST http://127.0.0.1:3002/api/validate_user
+content-type: application/x-www-form-urlencoded
+
+username=natalia.figuero
+&password=Hola1234
+
+### Reject wrong username and password
+POST http://127.0.0.1:3002/api/validate_user
+content-type: application/x-www-form-urlencoded
+
+username=natalia.figueroa
+&password=incorrecto
+
+### ---------------------------------------------
+
+### Retrieve all airports
+GET http://127.0.0.1:3001/api/airports
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzU4ODAyNTYsImV4cCI6MTY3NTg5NDY1Nn0.fKg3sp62uEtn4FV183ZhNZVtnAtBgX5itX7yK19neNA
+
+### Retrieve an airport by his uuid
+GET http://127.0.0.1:3001/api/airport/3725
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzU4ODAyNTYsImV4cCI6MTY3NTg5NDY1Nn0.fKg3sp62uEtn4FV183ZhNZVtnAtBgX5itX7yK19neNA
+
+### Retrieve destination airports by origin aiport uuid
+GET http://127.0.0.1:3001/api/destination_airports/origin_airport/3725
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzU4ODAyNTYsImV4cCI6MTY3NTg5NDY1Nn0.fKg3sp62uEtn4FV183ZhNZVtnAtBgX5itX7yK19neNA
+
+### Retrieve flights between airports
+GET http://127.0.0.1:3001/api/flights/origin_airport/3725/destination_airport/1763
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzU4ODAyNTYsImV4cCI6MTY3NTg5NDY1Nn0.fKg3sp62uEtn4FV183ZhNZVtnAtBgX5itX7yK19neNA
+
+

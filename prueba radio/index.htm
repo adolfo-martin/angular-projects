@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        :root {
+            font-size: 32px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-content: center;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            border: solid 0.1em black;
+            border-radius: 0.5em;
+            width: 2em;
+            height: 1em;
+            display: flex;
+            align-items: center;
+            font-size: 5rem;
+            position: relative;
+        }
+
+        input[type="checkbox"]::before {
+            content: "";
+            background-color: red;
+            position: absolute;
+            left: 0.1em;
+            border-radius: 50%;
+            width: 0.6em;
+            height: 0.6em;
+            transition-property: background-color, left;
+            transition-duration: 1000ms;
+        }
+
+        input[type="checkbox"]:checked::before {
+            left: calc(2em - 0.9em);
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" name="gender" id="tRadGender" checked>
+    <label for="tRadGender">Masculino</label>
+
+    <input type="checkbox" name="gender" id="tRadGender">
+    <label for="tRadGender">Masculino</label>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelsBooking 🚌</title>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script type="module">
+        import AuthenticationRepository from '../services/AuthenticationService.js';
+        import {openSpinner, closeSpinner} from './spinner.lib.js';
+
+        document.addEventListener('DOMContentLoaded', setup);
+
+        
+        function setup(e) {
+            setupValidateUserButton();
+        }
+
+
+        function setupValidateUserButton() {
+            document
+                .querySelector('#tButValidateUser')
+                .addEventListener('click', validateCredentialsUser)
+
+            async function validateCredentialsUser(e) {
+                try {
+                    openSpinner();
+
+                    const username = document.querySelector('#tTxtUsername').value;
+                    const password = document.querySelector('#tTxtPassword').value;
+
+                    const service = new AuthenticationRepository();
+                    const token = await service.validateUsernameAndPasswordAndRetrieveToken(username, password);
+                    closeSpinner();
+
+                    if (!token) {
+                        alert(`No se ha podido autentificar al usuario: no se ha obtenido un token`);
+                        return;
+                    }
+
+                    window.sessionStorage.setItem('token-travelsbooking', token);
+                    window.location.href = './elegir-ciudad-salida.html';
+                } catch (error) {
+                    closeSpinner();
+                    alert(`No se ha podido autentificar al usuario: ${error.message}`);
+                    return;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>TravelsBooking 🚌</h1>
+    </header>
+
+    <main>
+        <h2>Bienvenido a nuestra web de reserva de vuelos</h2>
+
+        <label>Usuario: </label>
+        <input type="text" id="tTxtUsername" value="natalia.figueroa">
+        <br>
+        <label>Contraseña: </label>
+        <input type="password" id="tTxtPassword" value="Hola1234">
+        <br>
+        <input type="button" id="tButValidateUser" value="Validar usuario"></input>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    --color-100: #d5f1d5;
+    --color-500: #347f34;
+    --color-700: #0b3e0b;
+    --color-900: #012b01;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr;
+}
+
+h1.page-title {
+    font-size: 2rem;
+    text-align: center;
+    background-color: var(--color-100);
+    color: var(--color-900);
+    padding: 0.25em 0;
+}
+
+main:has(#tChktQuantity:not(:checked)) {
+    #tLblQuantity {
+        display: none;
+        /* opacity: 0; */
+    }
+}
+
+main:has(#tChktMediumPrice:not(:checked)) {
+    #tLblMediumPrice {
+        display: none;
+        /* opacity: 0; */
+    }
+}
+
+main:has(#tChktCheaperProduct:not(:checked)) {
+    #tLblCheaperProduct {
+        display: none;
+        /* opacity: 0; */
+    }
+}
+
+main:has(#tChktMostExpensiveProduct:not(:checked)) {
+    #tLblMostExpensiveProduct {
+        display: none;
+        /* opacity: 0; */
+    }
+}
+
+.spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    width: 20dvh;
+    height: 20dvh;
+    border-top: solid 2.5dvh red;
+    border-bottom: solid 2.5dvh blue;
+    border-left: solid 2.5dvh green;
+    border-right: solid 2.5dvh orange;
+    border-radius: 50%;
+    animation: spin 2s linear 0s infinite;
+}
+
+@keyframes spin {
+    from {
+        rotate: 0turn;
+    }
+    to {
+        rotate: 1turn;
+    }
+}
+
+table, tr, td, th {
+    border: solid 3px var(--color-900);
+    border-collapse: collapse;
+    padding: 0.5rem;
+    text-align: center;
+
+    th {
+        background-color: var(--color-900);
+        color: var(--color-100);
+    }
+}

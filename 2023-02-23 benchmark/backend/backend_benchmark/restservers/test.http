@@ -1,0 +1,22 @@
+
+### Validates right username and password
+POST http://127.0.0.1:15397/rest/login_user
+content-type: application/x-www-form-urlencoded
+
+username=adolfo.martin
+&password=Hola1234
+
+### ---------------------------------------------
+
+### Retrieve all sockets
+GET http://127.0.0.1:48711/rest/sockets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb2xmby5tYXJ0aW4iLCJmaXJzdG5hbWUiOiJBZG9sZm8iLCJsYXN0bmFtZSI6Ik1hcnTDrW4iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNjc3MzY1ODkwLCJleHAiOjE2NzczODAyOTB9.6Lkel1ABlQDa5XQfl-XDH1cI1rebtXn4hDpX5JxCeRA
+
+### Retrieve processors by socket and cores
+GET http://127.0.0.1:48711/rest/socket/1200/cores/6/processors
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb2xmby5tYXJ0aW4iLCJmaXJzdG5hbWUiOiJBZG9sZm8iLCJsYXN0bmFtZSI6Ik1hcnTDrW4iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNjc3MzY1ODkwLCJleHAiOjE2NzczODAyOTB9.6Lkel1ABlQDa5XQfl-XDH1cI1rebtXn4hDpX5JxCeRA
+
+### Retrieve an processor by his id
+GET http://127.0.0.1:48711/rest/processor/1200-03
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb2xmby5tYXJ0aW4iLCJmaXJzdG5hbWUiOiJBZG9sZm8iLCJsYXN0bmFtZSI6Ik1hcnTDrW4iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNjc3MzY1ODkwLCJleHAiOjE2NzczODAyOTB9.6Lkel1ABlQDa5XQfl-XDH1cI1rebtXn4hDpX5JxCeRA
+

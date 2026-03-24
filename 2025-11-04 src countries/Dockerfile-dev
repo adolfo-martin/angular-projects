@@ -1,0 +1,36 @@
+# Establece la imagen base
+
+FROM node:17.1.0-alpine3.14
+
+# Información de Metadata
+LABEL "cl.apgca.appNode"="IES Ramón Arcas Meca"
+LABEL maintainer="adolfo.martin@iesramonarcas.es"
+LABEL version="0.1"
+
+# Crear directorio de trabajo
+RUN mkdir -p /opt/app
+RUN mkdir -p /opt/node_modules
+
+# Se estable el directorio de trabajo
+WORKDIR /opt
+
+# Instala los paquetes existentes en el package.json
+COPY package.json .
+RUN npm install --quiet
+
+# Instalación de Nodemon en forma Global
+# Al realizarse cambios reiniciar el servidor
+RUN npm install nodemon -g --quiet
+
+# Copia la Aplicación
+WORKDIR /opt/app
+# COPY . .
+
+# Enlazamos con enlaces los módulos
+RUN ln -s /opt/node_modules ./node_modules
+
+# Expone la aplicación en el puerto 8765
+EXPOSE 8765
+
+# Inicia la aplicación al iniciar al contenedor
+CMD nodemon -L --watch . app.js

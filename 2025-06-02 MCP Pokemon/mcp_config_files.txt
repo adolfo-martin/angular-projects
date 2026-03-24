@@ -1,0 +1,59 @@
+# requirements.txt
+aiohttp>=3.8.0
+mcp>=1.0.0
+
+---
+
+# claude_desktop_config.json
+# Este archivo debe ir en:
+# Windows: %APPDATA%/Claude/claude_desktop_config.json
+# macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+# Linux: ~/.config/Claude/claude_desktop_config.json
+
+{
+  "mcpServers": {
+    "pokeapi": {
+      "command": "python",
+      "args": ["/ruta/completa/a/tu/pokeapi_mcp_server.py"],
+      "env": {
+        "PYTHONPATH": "/ruta/completa/a/tu/directorio"
+      }
+    }
+  }
+}
+
+---
+
+# Instalación paso a paso:
+
+# 1. Crear directorio para el proyecto
+mkdir pokeapi-mcp
+cd pokeapi-mcp
+
+# 2. Crear entorno virtual (recomendado)
+python -m venv venv
+
+# En Windows:
+venv\Scripts\activate
+# En macOS/Linux:
+source venv/bin/activate
+
+# 3. Instalar dependencias
+pip install aiohttp mcp
+
+# 4. Guardar el código del servidor como pokeapi_mcp_server.py
+
+# 5. Hacer el archivo ejecutable (Linux/macOS)
+chmod +x pokeapi_mcp_server.py
+
+# 6. Configurar Claude Desktop:
+# - Localizar el archivo claude_desktop_config.json en tu sistema
+# - Añadir la configuración del servidor MCP
+# - Actualizar las rutas con las rutas reales de tu sistema
+
+# 7. Reiniciar Claude Desktop
+
+# 8. Probar la integración con comandos como:
+# "Búscame información sobre Pikachu"
+# "¿Cuáles son las estadísticas de Charizard?"
+# "Explícame el tipo fuego"

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ol id="tOlPokemons"></ol>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', retrieveAndShoPokemons)
+
+        async function retrieveAndShoPokemons() {
+            try {
+                const response = await fetch('https://pokeapi.co/api/v2/pokemon');
+                const data = await response.json();
+                addPokemonsToList(data.results);
+            } catch (e) {
+                console.error;
+            }
+
+            function addPokemonsToList(pokemons) {
+                const nOl = document.querySelector('#tOlPokemons');
+
+                pokemons
+                    .map(pokemon => pokemon.name)
+                    .forEach(name => {
+                        const nLi = document.createElement('li');
+                        nOl.appendChild(nLi);
+
+                        const nText = document.createTextNode(name)
+                        nLi.appendChild(nText)
+                    })
+            }
+        }
+
+    </script>
+</body>

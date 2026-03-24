@@ -1,0 +1,16 @@
+<div *ngIf="pizza$ | async as pizza">
+    <h3>{{pizza.nombre}}</h3>
+    <img src="{{pizza.foto}}">
+    <p>{{pizza.precio}} €</p>
+    <button>Selección de ingredientes</button>
+</div>
+
+
+<!-- <div *ngIf="pizzas$ | async as pizza">
+    <div *ngFor="let pizza as pizzas">
+        <h3>{{pizza.nombre}}</h3>
+        <img src="{{pizza.foto}}">
+        <p>{{pizza.precio}} €</p>
+        <button>Selección de ingredientes</button>
+    </div>
+</div> -->

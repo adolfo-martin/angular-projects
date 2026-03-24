@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelsBooking 🚌</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        table,
+        tr,
+        th,
+        td {
+            border: solid 2px blue;
+            border-collapse: collapse;
+        }
+    </style>
+    <script type="module">
+        import TravelsService from '../services/TravelsService.js';
+        import { showUserFullname } from './utils.js';
+        import { openSpinner, closeSpinner } from './spinner.lib.js';
+
+
+        document.addEventListener('DOMContentLoaded', setup);
+
+
+        async function setup(e) {
+            window.sessionStorage.setItem('token-travelsbooking', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs');
+            const token = window.sessionStorage.getItem('token-travelsbooking');
+            if (!token) {
+                alert('El usuario no ha sido autenticado.');
+                window.location.href = './index.htm';
+            }
+
+            showUserFullname();
+            showDepartureCityOnSubtitle(token);
+            showArrivalCityOnSubtitle(token);
+            await retrieveAndShowTravels(token);
+        }
+
+
+        async function showDepartureCityOnSubtitle(token) {
+            const departureCity = getDepartureCityFromLocalStorage();
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const city = await service.retrieveCityByUuid(departureCity, token);
+                closeSpinner();
+                document.querySelector('#tSpnDepartureCity').textContent = city.nombre;
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+            }
+        }
+
+
+        async function showArrivalCityOnSubtitle(token) {
+            const arrivalCity = getArrivalCityFromLocalStorage();
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const city = await service.retrieveCityByUuid(arrivalCity, token);
+                closeSpinner();
+                document.querySelector('#tSpnArrivalCity').textContent = city.nombre;
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+            }
+        }
+
+
+        function getDepartureCityFromLocalStorage() {
+            const departureCity = window.sessionStorage.getItem('ciudad-salida');
+            if (!departureCity) {
+                alert('Falta la ciudad de salida en Storage.');
+                window.location = './index.htm';
+            }
+
+            return departureCity;
+        }
+
+
+        function getArrivalCityFromLocalStorage() {
+            const arrivalCity = window.sessionStorage.getItem('ciudad-llegada');
+            if (!arrivalCity) {
+                alert('Falta la ciudad de llegada en Storage.');
+                window.location = './index.htm';
+            }
+
+            return arrivalCity;
+        }
+
+
+        function getDepartureCityFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const departureCity = params.get('ciudad-salida');
+            if (!departureCity) {
+                alert('Falta la ciudad de salida en URL.');
+                window.location = './index.htm';
+            }
+
+            return departureCity;
+        }
+
+
+        function getArrivalCityFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const arrivalCity = params.get('ciudad-llegada');
+            if (!arrivalCity) {
+                alert('Falta la ciudad de llegada en URL.');
+                window.location = './index.htm';
+            }
+
+            return arrivalCity;
+        }
+
+
+        async function retrieveAndShowTravels(token) {
+            const departureCity = getDepartureCityFromUrl();
+            const arrivalCity = getArrivalCityFromUrl();
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const travel = await service.retrieveTravelByDepartureCityAndArrivalCity(departureCity, arrivalCity, token);
+                await showTravel(travel);
+                closeSpinner();
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+            }
+        }
+
+
+        async function showTravel(travel) {
+            const nTbody = document.querySelector('#tTabTravels>tbody');
+            const service = new TravelsService();
+
+            const nTr = document.createElement('tr');
+            nTbody.appendChild(nTr);
+
+            const nTdTravelCode = document.createElement('td');
+            nTr.appendChild(nTdTravelCode);
+
+            const nTextTravelCode = document.createTextNode(travel.uuid);
+            nTdTravelCode.appendChild(nTextTravelCode);
+
+            const nTdDistance = document.createElement('td');
+            nTr.appendChild(nTdDistance);
+
+            const nTextDistance = document.createTextNode(`${travel.distance} kilómetros`);
+            nTdDistance.appendChild(nTextDistance);
+
+            const nTdDuration = document.createElement('td');
+            nTr.appendChild(nTdDuration);
+
+            const nTextDuration = document.createTextNode(`${travel.duration} minutos`);
+            nTdDuration.appendChild(nTextDuration);
+
+            const nTdPrice = document.createElement('td');
+            nTr.appendChild(nTdPrice);
+
+            const price = travel.price * travel.distance;
+            const nTextPrice = document.createTextNode(`${price} €`);
+            nTdPrice.appendChild(nTextPrice);
+
+            const nTdBook = document.createElement('td');
+            nTr.appendChild(nTdBook);
+            nTdBook.textContent = '+';
+            nTdBook.setAttribute('data-uuid', travel.uuid);
+            nTdBook.setAttribute('data-distancia', travel.uuid);
+            nTdBook.setAttribute('data-duracion', travel.duration);
+            nTdBook.setAttribute('data-price', travel.price);
+            // nTdBook.addEventListener('click', bookOrNotBookTravel);
+        }
+
+
+        function bookOrNotBookTravel(e) {
+            const nTdBook = e.target;
+            const travelUuid = parseInt(nTdBook.dataset.travelUuid);
+            const uuid = nTdBook.dataset.uuid;
+            const duration = parseInt(nTdBook.dataset.duration);
+            const price = parseInt(nTdBook.dataset.price);
+
+            const bookingBasket = JSON.parse(window.sessionStorage.getItem('booking_basket')) || [];
+            bookingBasket.push({ travelUuid, uuid, duration, price });
+            window.sessionStorage.setItem('booking_basket', JSON.stringify(bookingBasket));
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="tSpnFullname" style="display: none"></span>
+
+        <h1>TravelsBooking 🚌</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.htm">Inicio</a></li>
+            <li><a href="./elegir-ciudad-salida.html">Ciudades de salida</a></li>
+            <!-- <li><a href="./choose_arrival_city.htm">Aeropuertos de destino</a></li> -->
+        </ul>
+    </nav>
+
+    <h2>Trayecto</h2>
+    <h3>Salida en <span id="tSpnDepartureCity"></span></h3>
+    <h3>Llegada en <span id="tSpnArrivalCity"></span></h3>
+
+
+    <label>Configuración del trayecto:</label>
+    <table id="tTabTravels">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Distancia</th>
+                <th>Duración</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark CPU 🖥🖥️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        table, tr, th, td {
+            border: solid 2px blue;
+            border-collapse: collapse;
+        }
+
+        .contenedor-dos-columnas {
+            display: inline-grid;
+            grid-template-columns: auto auto;
+            gap: 0.5rem;
+        }
+    </style>
+
+    <script type="module">
+        import BenchmarkService from '../services/BenchmarkService.js';
+        import { showUserFullnameAndDirection } from './utils.js';
+        import { openSpinner, closeSpinner } from './spinner.lib.js';
+
+
+        document.addEventListener('DOMContentLoaded', setup);
+
+
+        async function setup(e) {
+            const token = window.sessionStorage.getItem('token-benchmark');
+            if (!token) {
+                alert('El usuario no ha sido autenticado.');
+                window.location.href = './index.htm';
+            }
+
+            showUserFullnameAndDirection(token);
+            // showSocketAndCoreOnSubtitle(token);
+            await retrieveAndShowProcessors(token);
+        }
+
+
+        async function showSocketAndCoreOnSubtitle(token) {
+            const { socketNombre, coreNombre } = getSocketAndCoreNamesFromLocalStorage();
+            document.querySelector('#tSpnSocket').textContent = socketNombre;
+            document.querySelector('#tSpnCore').textContent = coreNombre;
+        }
+
+
+        function getSocketAndCoreNamesFromLocalStorage() {
+            const socketNombre = window.sessionStorage.getItem('socket_nombre');
+            if (!socketNombre) {
+                alert('No hay nombre del género almacenado en la sesión');
+                window.location = './select_cores_socket.htm';
+            }
+
+            const coreNombre = window.sessionStorage.getItem('core_nombre');
+            if (!coreNombre) {
+                alert('No hay nombre de la core almacenado en la sesión');
+                window.location = './select_cores_socket.htm';
+            }
+
+            return { socketNombre, coreNombre };
+        }
+
+
+        function getSocketAndCoresFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+
+            const socketIds = params.get('sockets');
+            if (!socketIds) {
+                alert('No hay sockets en la url');
+                window.location = './select_cores_socket.html';
+            }
+
+            const coresQuantity = params.get('cores');
+            if (!coresQuantity) {
+                alert('No hay cores en la url');
+                window.location = './select_cores_socket.html';
+            }
+
+            return { socketIds, coresQuantity };
+        }
+
+
+        async function retrieveAndShowProcessors(token) {
+            const { socketIds, coresQuantity } = getSocketAndCoresFromUrl();
+
+            try {
+                const service = new BenchmarkService();
+                openSpinner();
+                const processors = [];
+                for (const socketId of socketIds.split(',')) {
+                    processors.push(
+                        ... await service.retrieveProcessorsBySocketAndCores(socketId, coresQuantity, token)
+                    );
+                }
+                await showProcessors(processors, token);
+                closeSpinner();
+            } catch (error) {
+                closeSpinner();
+                alert(error.message);
+            }
+        }
+
+
+        async function showProcessors(processors, token) {
+            const nTbody = document.querySelector('#tTabProcessors>tbody');
+            const service = new BenchmarkService();
+
+            await Promise.all(processors.map(createRows));
+
+            async function createRows(processorId) {
+                try {
+                    const processor = await service.retrieveProcessorById(processorId, token);
+                    
+                    const nTr = document.createElement('tr');
+                    nTbody.appendChild(nTr);
+                    
+                    const nTdLongname = document.createElement('td');
+                    nTr.appendChild(nTdLongname).textContent = processor.longname;
+                    
+                    const nTdPrice = document.createElement('td');
+                    nTr.appendChild(nTdPrice).textContent = processor.price;
+
+                    const nTdMark = document.createElement('td');
+                    nTr.appendChild(nTdMark).textContent = processor.mark;
+
+                    const nTdRatio = document.createElement('td');
+                    const ratio = Math.round(parseInt(processor.mark) / parseFloat(processor.price) * 100, 2) / 100;
+                    nTr.appendChild(nTdRatio).textContent = `${ratio} p/€`;
+
+                    const nTdCompare = document.createElement('td');
+                    nTr.appendChild(nTdCompare);
+                    const nChkCompare = document.createElement('input');
+                    nChkCompare.setAttribute('type', 'checkbox');
+                    nChkCompare.setAttribute('data-name', processor.longname);
+                    nChkCompare.setAttribute('data-ratio', ratio);
+                    nChkCompare.addEventListener('change', showWorstAndBestProcessors);
+                    nTdCompare.appendChild(nChkCompare);
+
+                    
+                } catch (error) {
+                    alert(error.message);
+                    return;
+                }
+            }
+        }
+
+
+        function showWorstAndBestProcessors(_) {
+            let bestRatio = 0;
+            let bestRatioProcessorName = '';
+            let worstRatio = 1000000;
+            let worstRatioProcessorName = '';
+
+            const nSelectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            for (const nCheckbox of nSelectedCheckboxes) {
+                const ratio = parseFloat(nCheckbox.dataset.ratio);
+                if ( ratio < worstRatio) {
+                    worstRatio = ratio;
+                    worstRatioProcessorName = nCheckbox.dataset.name;
+                }
+    
+                if (ratio > bestRatio) {
+                    bestRatio = ratio;
+                    bestRatioProcessorName = nCheckbox.dataset.name;
+                }
+            }
+
+            document.querySelector("#tTxtBestRatioProcessor").value = bestRatioProcessorName
+            document.querySelector("#tTxtWorstRatioProcessor").value = worstRatioProcessorName
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="tSpnFullname"></span>
+        <span id="tSpnDirection"></span>
+
+        <h1>Benchmark CPU 🖥🖥️</h1>
+    </header>
+
+    <h2>Comparación de procesadores</h2>
+    <h3>Seleccione los procesadores a comparar</h3>
+    
+    <table id="tTabProcessors">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Puntuación</th>
+                <th>Ratio<br>puntos/precio</th>
+                <th>Comparar</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><br>
+    <div class="contenedor-dos-columnas">
+        <label for="">Pocesador con mejor ratio de los seleccionados:</label>
+        <input type="text" id="tTxtBestRatioProcessor" disabled>
+
+        <label for="">Procesador con peor ratio de los seleccionados:</label>
+        <input type="text" id="tTxtWorstRatioProcessor" disabled>
+    </div>
+
+</body>
+
+</html>

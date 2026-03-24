@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="/views/style.css">
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+
+            div#tDivProductsContainer {
+                display: grid;
+                grid-template-columns: repeat(4, 200px);
+                grid-auto-rows: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        
+    </style>
+
+    <script type="module" src="/views/pages/products.js"></script>
+    <script src="/views/webcomponents/header-app.component.js" type="module"></script>
+    <script src="/views/webcomponents/menu-app.component.js" type="module"></script>
+    <script src="/views/webcomponents/card-product.component.js" type="module"></script>
+</head>
+<body>
+    <header-app></header-app>
+    <menu-app active="products"></menu-app>
+
+    <header>
+        <h1 class="page-title">Productos</h1>
+    </header>
+    <div class="spinner"></div>
+
+    <main>
+        <div id="tDivProductsContainer"></div>
+
+        <template id="tTmpProduct">
+            <card-product product=""></card-product>
+        </template>
+    </main>
+
+</body>
+
+</html>

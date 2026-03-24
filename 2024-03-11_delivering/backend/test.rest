@@ -1,0 +1,24 @@
+### Chequeo que haga bien la validacion
+# POST http://authentication-server.d6cjf7gdayfxaham.francecentral.azurecontainer.io/api/login_user
+POST http://authenticationserver.fjh3fbdef4c9dcaw.francecentral.azurecontainer.io/api/login_user
+content-type: application/x-www-form-urlencoded
+
+username=sonia.silverado
+&password=s
+
+
+### Validates token
+GET http://authenticationserver.fjh3fbdef4c9dcaw.francecentral.azurecontainer.io/api/validate_token
+Content-Type: application/json
+
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE3MTA5MjIwNDgsImV4cCI6MTcxMDkzNjQ0OH0.tbBusiUpkiuv_QIljvHROjzzynCvLC7qgHbaHOWTRhY" }
+
+#-----------------------------------
+
+### Retrieve vans
+GET http://127.0.0.1:3000/api/vans
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE3MDEzNDA5MzUsImV4cCI6MTcwMTM1NTMzNX0.WYWkhcN1u2YO9wRKclFiIpZf8FPSqH-6EgHxT8nSIo4
+
+### Retrieve packets
+GET http://127.0.0.1:3000/api/packets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE3MTA5MjIwNDgsImV4cCI6MTcxMDkzNjQ0OH0.tbBusiUpkiuv_QIljvHROjzzynCvLC7qgHbaHOWTRhY

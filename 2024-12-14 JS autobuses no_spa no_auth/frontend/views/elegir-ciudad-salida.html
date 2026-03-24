@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelsBooking 🚌</title>
+    <script type="module">
+        import TravelsService from '../services/TravelsService.js';
+        import { showUserFullname } from './utils.js';
+        import { openSpinner, closeSpinner } from './spinner.lib.js';
+
+
+        document.addEventListener('DOMContentLoaded', setup);
+
+
+        async function setup(e) {
+            window.sessionStorage.setItem('token-travelsbooking', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJkaXJlY3Rpb24iOiI6OmZmZmY6MTI3LjAuMC4xIiwiaWF0IjoxNzM3Mzg4NzgyLCJleHAiOjE3Mzc0MDMxODJ9.TrWrQmY39UCaNVy_0DHrsFV0IhUnBBdKMzKigTs4Bgs');
+
+            const token = window.sessionStorage.getItem('token-travelsbooking');
+            if (!token) {
+                alert('El usuario no ha sido autenticado.');
+                window.location.href = './index.html';
+            }
+
+            showUserFullname();
+            setuptCitySelectedButton();
+
+            await retrieveAndShowCities(token);
+        }
+
+
+        async function retrieveAndShowCities(token) {
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const cities = await service.retrieveCities(token);
+                closeSpinner();
+                showCities(cities);
+            } catch (error) {
+                closeSpinner();
+                alert(`No se han podido recuperar las ciudades: ${error.message}. Por favor, refresque la pantalla.`);
+            }
+        }
+
+
+        function showCities(cities) {
+            const nSelect = document.querySelector('#tSelCity');
+            nSelect.setAttribute('size', cities.length);
+
+            nSelect.addEventListener('change', showReview);
+
+            cities.forEach(createOption);
+
+            function createOption(city) {
+                const nOption = document.createElement('option');
+                nSelect.appendChild(nOption);
+                nOption.setAttribute('value', city.uuid);
+
+                const nText = document.createTextNode(`${city.nombre} (${city.uuid})`);
+                nOption.appendChild(nText);
+            }
+        }
+
+
+        async function showReview(e) {
+            const cityUuid = e.target.value;
+            const token = window.sessionStorage.getItem('token-travelsbooking');
+
+            try {
+                const service = new TravelsService();
+                openSpinner();
+                const city = await service.retrieveCityByUuid(cityUuid, token);
+                
+                const nPar = document.querySelector('#tParReview');
+                nPar.textContent = `Reseña: ${city.reseña}`;
+
+                const nButton = document.querySelector('#tButCitySelected');
+                nButton.textContent = `Ir a seleccionar ciudad de destino con salida desde ${city.nombre}`;
+
+                closeSpinner();
+            } catch (error) {
+                closeSpinner();
+                alert(`No se ha podido recuperar la ciudad: ${error.message}. Por favor, refresque la pantalla.`);
+            }
+        }
+
+
+        function setuptCitySelectedButton() {
+            const nButton = document.querySelector('#tButCitySelected');
+            nButton.addEventListener('click', navigateToCitySelectionPage);
+        }
+
+
+        function navigateToCitySelectionPage() {
+            const city = document.querySelector('#tSelCity').value;
+            sessionStorage.setItem('ciudad-salida', city);
+            window.location = `./elegir-ciudad-llegada.html?ciudad-salida=${city}`;
+        }
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <span id="tSpnFullname" style="display: none"></span>
+        <h1>TravelsBooking 🚌</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="./index.html">Inicio</a></li>
+        </ul>
+    </nav>
+
+    <h2>Ciudades de salida</h2>
+
+    <label>Seleccione el ciudad de salida del viaje:</label>
+    <br>
+    <div style="display: flex; gap: 20px">
+        <div id="tDivAminoacidType" style="width: 30ch; border: solid; display: grid; grid-template-columns: auto auto; gap: 10px; padding: 10px">
+            <select id="tSelCity"></select>
+        </div>
+        <div style="width: 35ch; border: solid; padding: 10px">
+            <p id="tParReview"></p>
+            <button id="tButCitySelected">Debe elegir la ciudad de salida</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
