@@ -1,0 +1,12 @@
+<header>Validación de usuarios</header>
+
+<label> Usuario:</label>
+<input type="text" #username value="emilys">
+
+<label> Contraseña:</label>
+<input type="text" #password value="emilyspass">
+
+<button type="button" (click)="validateClickedHandler(username.value, password.value)">Validar</button>
+@if (appStateService.isLoading()) {
+    <div>Validando usuario. Espere, por favor.</div>
+}

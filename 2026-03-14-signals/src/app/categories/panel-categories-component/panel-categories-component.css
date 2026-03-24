@@ -1,0 +1,14 @@
+table, tr, th, td {
+    border: solid;
+    border-collapse: collapse;
+}
+
+img {
+    height: 50px;
+}
+
+section {
+    display: inline-flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}

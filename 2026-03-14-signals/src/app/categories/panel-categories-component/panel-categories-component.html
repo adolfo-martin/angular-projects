@@ -1,0 +1,26 @@
+<h1>Categorías</h1>
+
+@if (categories$ | async; as categories) {
+<form>
+    @let txtFilter = form.txtFilter();
+    <label for="txtFilter">Filtro:
+        <input type="text" id="txtFilter">
+    </label>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">Categorías</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (category of categories; track $index) {
+            <tr>
+                <td>{{category.name}}</td>
+                <img [src]="category.image">
+            </tr>
+            }
+        </tbody>
+    </table>
+</form>
+}

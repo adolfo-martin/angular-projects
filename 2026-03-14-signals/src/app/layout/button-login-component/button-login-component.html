@@ -1,0 +1,10 @@
+@if (appStateService.isLogged()) {
+    <button type="button" class="btn-login shortname" popovertarget="sctExtraOptions">{{appStateService.shortname()}}</button>
+
+    <section id="sctExtraOptions" popover>
+        <div>{{appStateService.fullname()}}</div>
+        <button type="button" (click)="closeButtonClickedHandler()">Cerrar</button>
+    </section>
+} @else {
+    <button type="button" class="btn-login" (click)="openButtonClickedHandler()">Abrir</button>
+}

@@ -1,0 +1,26 @@
+:host {
+    background-color: lightblue;
+    display: inline-grid;
+    columns: auto 2;
+    padding: 0.5rem;
+    gap: 0.5rem;
+}
+
+header, button {
+    grid-column: span 2;
+}
+
+header {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+button {
+    width: fit-content;
+    place-self: center;
+}
+
+label {
+    text-align: right;
+}
