@@ -1,0 +1,92 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    --page-bg-color: black;
+    --event-bg-color: darkred;
+    --event-txt-color: lightpink;
+    --place-txt-color: lime;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--page-bg-color);
+}
+
+.name-event {
+    background-color: var(--event-bg-color);
+    color: var(--event-txt-color);
+    font-size: 2rem;
+    font-weight: bold;
+    width: 12ch;
+    padding: 1ch;
+    text-align: center;
+    position: absolute;
+    left: calc(50% - 6ch);
+    animation-name: down-move, grow-move;
+    animation-duration: 2s, 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-iteration-count: 1, infinite;
+    animation-direction: normal, alternate;
+}
+
+@keyframes down-move {
+    from {
+        top: -100%;
+    }
+    to {
+        top: calc(25% - 3ch);
+    }
+}
+
+@keyframes grow-move {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.5);
+    }
+}
+
+.place-event {
+    color: var(--place-txt-color);
+    font-size: 2rem;
+    font-weight: bold;
+    width: 23ch;
+    padding: 1ch;
+    text-align: center;
+    position: absolute;
+    top: calc(80% - 6ch);
+    animation-name: place-move, color-change;
+    animation-duration: 2s;
+    animation-delay: 4s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-iteration-count: 1, infinite;
+    animation-direction: normal, alternate;
+}
+
+
+@keyframes place-move {
+    from {
+        right: 100%;
+    }
+    to {
+        right: calc(50% - 11ch); 
+    }
+}
+
+@keyframes color-change {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: black;
+    }
+}

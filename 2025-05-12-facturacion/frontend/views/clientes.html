@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="module">
+        import InvoicingService from '../services/invoicing.service.js';
+
+        setup();
+
+        async function setup() {
+            const service = new InvoicingService();
+            const customers = await service.retrieveCustomers();
+            renderCustomers(customers);
+
+            const nSelCustomers = document.querySelector('#tSelCustomers');
+            nSelCustomers.addEventListener('change', async (event) => {
+                const customerId = event.target.value;
+                const customer = await service.retrieveCustomerById(customerId);
+                renderCustomerDetails(customer);
+            });
+
+            const button = document.querySelector('#tButGotoPageInvoices');
+            button.addEventListener('click', () => {
+                window.location.href = `facturas.html?cliente=${nSelCustomers.value}`;
+            });
+        }
+
+        function renderCustomers(customers) {
+            const select = document.querySelector('#tSelCustomers');
+
+            customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.identificadorFiscal;
+                option.textContent = `${customer.apellido}, ${customer.nombre}`;
+                select.appendChild(option);
+            });
+        }
+
+        function renderCustomerDetails(customer) {
+            document.querySelector('#tTxtCustomerName').value = customer.nombre;
+            document.querySelector('#tTxtCustomerFiscalId').value = customer.identificadorFiscal;
+            document.querySelector('#tTxtCustomerAddress').value = customer.direccion;
+            document.querySelector('#tTxtCustomerCity').value = customer.ciudad;
+            document.querySelector('#tTxtCustomerPostalCode').value = customer.codigoPostal;
+            document.querySelector('#tTxtCustomerCreditLimit').value = customer.limiteCredito;
+        }
+    </script>
+</head>
+<body>
+    <header>Facturación</header>
+
+    <main>
+        <h1>Clientes</h1>
+
+        <label for="tSelCustomers">Cliente: </label>
+        <select name="" id="tSelCustomers">
+            <option selected disabled placeholder>Seleccione un cliente</option>
+        </select>
+
+        <br><br>
+
+        <div id="tDivCustomerDetails">
+            <label for="tTxtCustomerName">Nombre: </label>
+            <input type="text" id="tTxtCustomerName" disabled>
+
+            <br>
+            <label for="tTxtCustomerFiscalId">Identificador fiscal: </label>
+            <input type="text" id="tTxtCustomerFiscalId" disabled>
+
+            <br>
+            <label for="tTxtCustomerAddress">Dirección: </label>
+            <input type="text" id="tTxtCustomerAddress" disabled>
+
+            <br>
+            <label for="tTxtCustomerCity">Ciudad: </label>
+            <input type="text" id="tTxtCustomerCity" disabled>
+
+            <br>
+            <label for="tTxtCustomerPostalCode">Código postal: </label>
+            <input type="text" id="tTxtCustomerPostalCode" disabled>
+
+            <br>
+            <label for="tTxtCustomerCreditLimit">Límite de crédito: </label>
+            <input type="text" id="tTxtCustomerCreditLimit" disabled>
+            
+            <br><br>
+
+            <button type="button" id="tButGotoPageInvoices">Ver facturas</button>
+        </div>
+    </main>
+
+    
+</body>
+</html>

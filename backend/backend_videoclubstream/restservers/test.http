@@ -1,0 +1,25 @@
+
+### Validates right username and password
+POST http://127.0.0.1:3002/api/validate_user
+content-type: application/x-www-form-urlencoded
+
+username=natalia.figueroa
+&password=Hola1234
+
+### ---------------------------------------------
+
+### Retrieve all generos
+GET http://127.0.0.1:3001/api/generos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzY3MjA2MTMsImV4cCI6MTY3NjczNTAxM30.rsxN8ysQOsdpIASsilo1aq02rEQuxE2L8GLkWB-TEEY
+
+### Retrieve peliculas by genero and fotografia
+GET http://127.0.0.1:3001/api/genero/be/fotografia/byn/peliculas
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzY3MjA2MTMsImV4cCI6MTY3NjczNTAxM30.rsxN8ysQOsdpIASsilo1aq02rEQuxE2L8GLkWB-TEEY
+
+### Retrieve an pelicula by his id
+GET http://127.0.0.1:3001/api/pelicula/ro1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzY3MjA2MTMsImV4cCI6MTY3NjczNTAxM30.rsxN8ysQOsdpIASsilo1aq02rEQuxE2L8GLkWB-TEEY
+
+### Retrieve an persona by his id
+GET http://127.0.0.1:3001/api/persona/pe22
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hdGFsaWEuZmlndWVyb2EiLCJmaXJzdG5hbWUiOiJOYXRhbGlhIiwibGFzdG5hbWUiOiJGaWd1ZXJvYSIsImRpcmVjdGlvbiI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE2NzY3MjA2MTMsImV4cCI6MTY3NjczNTAxM30.rsxN8ysQOsdpIASsilo1aq02rEQuxE2L8GLkWB-TEEY

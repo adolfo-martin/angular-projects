@@ -1,0 +1,38 @@
+getElementById
+getElementsByClassName
+createElement
+createTextNode
+setAttribute
+appendChild
+hasChildNodes
+firstChild
+lastChild
+removeChild
+querySelector
+querySelectorAll
+
+push
+pop
+shift                      elimina el primer elemento de un array
+unshift                    añade un elemento al inicio del array
+splice(inicio, cuantos)    elimina elementos de un array, empezando en la 
+                           posición <inicio> y en la cantidad indicada en <cuantos> 
+filter(función)
+indexOf(función)
+find(función)
+forEach(función)
+
+---------------------------------------------------
+fetch(url)
+    .then( response => response.json() )
+    .then(data => {})
+    .catch(console.error);
+
+---------------------------------------------------
+async function
+try {
+	const response = await fetch(url)
+	const data = await response.json();
+} catch (e) {
+    console.error(e);
+}

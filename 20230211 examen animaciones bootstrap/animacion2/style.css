@@ -1,0 +1,123 @@
+:root {
+    --page-bg-color: black;
+    --needle-bg-color: red;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--page-bg-color);
+}
+
+.needle {
+    width: 15px;
+    height: 100px;
+    background-color: var(--needle-bg-color);
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    transform-origin: bottom;
+    animation: clock-countdown 2s linear 0s 1 normal both;
+}
+
+@keyframes clock-countdown {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+.large-globe {
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    border-radius: 50%;
+    position: absolute;
+    left: calc(50% - 50px);
+    animation: globe-up 1s linear 0s 1 normal both;
+    animation-play-state: paused;
+}
+
+@keyframes globe-up {
+    from {
+        bottom: 0%;
+    }
+
+    to {
+        bottom: calc(100% - 200px);
+    }
+}
+
+.medium-globe {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background-color: yellow;
+    border-radius: 50%;
+    position: absolute;
+    bottom: calc(100% - 200px);
+    animation-play-state: paused;
+}
+
+.medium-globe-1 {
+    animation: globe-blash-1 2s linear 0s 1 normal both;
+    animation-play-state: paused;
+}
+
+.medium-globe-2 {
+    animation: globe-blash-2 2s linear 1s 1 normal both;
+    animation-play-state: paused;
+}
+
+@keyframes globe-blash-1 {
+    from {
+        left: calc(50% - 10px);
+    }
+
+    to {
+        left: 0%;
+    }
+}
+
+@keyframes globe-blash-2 {
+    from {
+        right: calc(50% - 10px);
+    }
+
+    to {
+        right: 0%;
+    }
+}
+
+.small-globe {
+    /* display: none; */
+    width: 20px;
+    height: 20px;
+    background-color: pink;
+    z-index: 1000;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -50px;
+    animation: globe-small 2s linear 0s 1 normal both;
+    animation-play-state: paused;
+}
+
+@keyframes globe-small {
+    from {
+        top: 0px;
+        left: 0px;
+    }
+
+    to {
+        top: -100px;
+        left: 100px;
+    }
+}

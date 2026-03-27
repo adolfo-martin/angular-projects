@@ -1,0 +1,42 @@
+from enum import Enum, auto
+class TipoLista(Enum):
+
+
+direccion: str
+direccrion_correcta: str
+
+
+from enum import Enum
+class DireccionMac(Exception):
+    def_int_(self, mensaje):
+    self.mensaje= mensaje
+
+    class DireccionMac:
+        def int (self, direccion):
+        if not 
+        self direccion_correcta(direccion):
+        raise
+    DireccionMacError ("Direccion MAC incorrrecta")
+    self.direccion = direccion
+    def repr 
+    return [DireccionMac]{self.direccion}
+
+
+   return len(self.direccion) == 17
+
+def get dirrecion(self):
+return slef.direccion
+
+def set direccion(self, nueva_direccion):
+
+if 
+self.es_direccion_corecta(nueva)_direccion:
+self.direccion= nueva_direccion else 
+
+raise 
+DireccionMacError("Direccion MAC incorrecta") 
+
+
+
+
+

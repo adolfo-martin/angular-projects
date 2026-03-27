@@ -1,0 +1,333 @@
+[
+    {
+        "name": "bulbasaur",
+        "id": "1",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 7,
+        "weight": 69,
+        "base_experience": 64,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+        "types": [
+            "grass",
+            "poison"
+        ]
+    },
+    {
+        "name": "ivysaur",
+        "id": "2",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 10,
+        "weight": 130,
+        "base_experience": 142,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+        "types": [
+            "grass",
+            "poison"
+        ]
+    },
+    {
+        "name": "venusaur",
+        "id": "3",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 20,
+        "weight": 1000,
+        "base_experience": 263,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+        "types": [
+            "grass",
+            "poison"
+        ]
+    },
+    {
+        "name": "charmander",
+        "id": "4",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 6,
+        "weight": 85,
+        "base_experience": 62,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+        "types": [
+            "fire"
+        ]
+    },
+    {
+        "name": "charmeleon",
+        "id": "5",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 11,
+        "weight": 190,
+        "base_experience": 142,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
+        "types": [
+            "fire"
+        ]
+    },
+    {
+        "name": "charizard",
+        "id": "6",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 17,
+        "weight": 905,
+        "base_experience": 267,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+        "types": [
+            "fire",
+            "flying"
+        ]
+    },
+    {
+        "name": "squirtle",
+        "id": "7",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 5,
+        "weight": 90,
+        "base_experience": 63,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+        "types": [
+            "water"
+        ]
+    },
+    {
+        "name": "wartortle",
+        "id": "8",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 10,
+        "weight": 225,
+        "base_experience": 142,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
+        "types": [
+            "water"
+        ]
+    },
+    {
+        "name": "blastoise",
+        "id": "9",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 16,
+        "weight": 855,
+        "base_experience": 265,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
+        "types": [
+            "water"
+        ]
+    },
+    {
+        "name": "caterpie",
+        "id": "10",
+        "base_happiness": 50,
+        "capture_rate": 255,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 3,
+        "weight": 29,
+        "base_experience": 39,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png",
+        "types": [
+            "bug"
+        ]
+    },
+    {
+        "name": "metapod",
+        "id": "11",
+        "base_happiness": 50,
+        "capture_rate": 120,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 7,
+        "weight": 99,
+        "base_experience": 72,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png",
+        "types": [
+            "bug"
+        ]
+    },
+    {
+        "name": "butterfree",
+        "id": "12",
+        "base_happiness": 50,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 11,
+        "weight": 320,
+        "base_experience": 198,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png",
+        "types": [
+            "bug",
+            "flying"
+        ]
+    },
+    {
+        "name": "weedle",
+        "id": "13",
+        "base_happiness": 70,
+        "capture_rate": 255,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 3,
+        "weight": 32,
+        "base_experience": 39,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png",
+        "types": [
+            "bug",
+            "poison"
+        ]
+    },
+    {
+        "name": "kakuna",
+        "id": "14",
+        "base_happiness": 70,
+        "capture_rate": 120,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 6,
+        "weight": 100,
+        "base_experience": 72,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png",
+        "types": [
+            "bug",
+            "poison"
+        ]
+    },
+    {
+        "name": "beedrill",
+        "id": "15",
+        "base_happiness": 70,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 10,
+        "weight": 295,
+        "base_experience": 178,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png",
+        "types": [
+            "bug",
+            "poison"
+        ]
+    },
+    {
+        "name": "pidgey",
+        "id": "16",
+        "base_happiness": 70,
+        "capture_rate": 255,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 3,
+        "weight": 18,
+        "base_experience": 50,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png",
+        "types": [
+            "normal",
+            "flying"
+        ]
+    },
+    {
+        "name": "pidgeotto",
+        "id": "17",
+        "base_happiness": 70,
+        "capture_rate": 120,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 11,
+        "weight": 300,
+        "base_experience": 122,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png",
+        "types": [
+            "normal",
+            "flying"
+        ]
+    },
+    {
+        "name": "pidgeot",
+        "id": "18",
+        "base_happiness": 70,
+        "capture_rate": 45,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 15,
+        "weight": 395,
+        "base_experience": 216,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png",
+        "types": [
+            "normal",
+            "flying"
+        ]
+    },
+    {
+        "name": "rattata",
+        "id": "19",
+        "base_happiness": 70,
+        "capture_rate": 255,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 3,
+        "weight": 35,
+        "base_experience": 51,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/19.png",
+        "types": [
+            "normal"
+        ]
+    },
+    {
+        "name": "raticate",
+        "id": "20",
+        "base_happiness": 70,
+        "capture_rate": 127,
+        "is_baby": false,
+        "is_legendary": false,
+        "is_mythical": false,
+        "height": 7,
+        "weight": 185,
+        "base_experience": 145,
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/20.png",
+        "types": [
+            "normal"
+        ]
+    }
+]

@@ -1,0 +1,42 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    --color-100: #e3e9ec;
+    --color-200: #c4d0d7;
+    --color-300: #a5b2c0;
+    --color-400: #8694aa;
+    --color-500: #68758f;
+    --color-600: #4a5772;
+    --color-700: #2c394d;
+    --color-800: #1e2538;
+    --color-900: #101520;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100dvh;
+}
+
+table, tr, th, td {
+    border: 3px solid var(--color-900);
+    border-collapse: collapse;
+}
+
+table th {
+    background-color: var(--color-700);
+    color: var(--color-100);
+}
+
+.site-title {
+    background-color: var(--color-700);
+    color: var(--color-100);
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.5rem 0;
+}

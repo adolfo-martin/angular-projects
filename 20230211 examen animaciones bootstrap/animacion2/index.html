@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="refresh" content="60">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="needle"></div>
+    <div class="large-globe"></div>
+    <div class="medium-globe medium-globe-1">
+        <div class="small-globe medium-globe-1"></div>
+    </div>
+    <div class="medium-globe medium-globe-2">
+        <div class="small-globe medium-globe-1"></div>
+    </div>
+    <!-- <div class="medium-globe globe-3"></div>
+    <div class="medium-globe globe-4"></div>
+    <div class="medium-globe globe-5"></div> -->
+
+    <script>
+        document.querySelector('.needle')
+            .addEventListener('animationend', startLargeGlobeAnimation);
+
+        document.querySelector('.large-globe')
+            .addEventListener('animationend', startMediumGlobeAnimation);
+
+
+        document.querySelector('.medium-globe')
+            .addEventListener('animationstart', startSmallGlobeAnimation);
+    
+
+        function startLargeGlobeAnimation(e) {
+            nLargeGlobe = document.querySelector('.large-globe');
+            nLargeGlobe.style.animationPlayState = 'running';
+        }
+        
+        function startMediumGlobeAnimation(e) {
+            e.target.style.display = 'none';
+            mediumGlobes = document.querySelectorAll('.medium-globe');
+            for (const globe of mediumGlobes) {
+                globe.style.display = 'block';
+                globe.style.animationPlayState = 'running';
+            }
+        }
+
+        function startSmallGlobeAnimation(e) {
+            nSmallGlobes = document.querySelectorAll('.small-globe');
+            for (const globe of nSmallGlobes)
+                globe.style.animationPlayState = 'running';
+        }
+    </script>
+</body>
+</html>

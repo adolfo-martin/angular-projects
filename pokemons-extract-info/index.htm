@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', async _ => {
+            const pokemons = await retrieveAllPokemons()
+            const pokemonsWithAdditionalDataFromSpecies = await retrieveAdditionalDataFromSpecies(pokemons)
+            const pokemonsWithAdditionalDataFromPokemons = await retrieveAdditionalDataFromPokemons(pokemonsWithAdditionalDataFromSpecies)
+            console.log(pokemonsWithAdditionalDataFromPokemons)
+        })
+
+        async function retrieveAdditionalDataFromSpecies(pokemons) {
+            const pokemonsWithAdditionalData = pokemons.map(async pokemon => {
+                const url = `https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}`
+                const response = await fetch(url)
+                const data = await response.json()
+                const { base_happiness, capture_rate, is_baby, is_legendary, is_mythical } = data;
+                return { ...pokemon, base_happiness, capture_rate, is_baby, is_legendary, is_mythical }
+            })
+
+            return Promise.all(pokemonsWithAdditionalData)
+        }
+
+        async function retrieveAdditionalDataFromPokemons(pokemons) {
+            const pokemonsWithAdditionalData = pokemons.map(async pokemon => {
+                const url = `https://pokeapi.co/api/v2/pokemon/${pokemon.id}`
+                const response = await fetch(url)
+                const data = await response.json()
+                const { height, weight, base_experience, sprites: {front_default: image},  types } = data;
+                const types2 = types.map(type => type.type.name)
+                return { ...pokemon, height, weight, base_experience, image, types: types2 }
+            })
+
+            return Promise.all(pokemonsWithAdditionalData)
+        }
+
+        async function retrievePokemonsByUrl(url) {
+            const response = await fetch(url)
+            const data = await response.json()
+            return [ data.results, data.next ]
+        }
+
+        async function retrieveAllPokemons() {
+            const allPokemons = []
+            let url = 'https://pokeapi.co/api/v2/pokemon-species/'
+
+            while (url) {
+                const [ pokemons, nextUrl ] = await retrievePokemonsByUrl(url)
+                const pokemonsNameId = pokemons.map(({ name, url }) => {
+                    const numberPattern = /\d+/g;
+                    return { name, id: url.match(numberPattern)[1]}
+                })
+                allPokemons.push(...pokemonsNameId)
+                url = nextUrl
+            }
+            return allPokemons
+        }
+
+
+        // height, weight, base_experience, image,  types
+        // https://pokeapi.co/api/v2/type/
+
+
+        // const root = await navigator.storage.getDirectory();
+        // const fileHandle = await root.getFileHandle('pokemons.txt', { create: true });
+
+        // const accessHandle = await fileHandle.createAccessHandle();
+        // await accessHandle.writable.getWriter().write(buffer);
+        // const reader = accessHandle.readable.getReader({ mode: 'byob' });
+        // // Assumes seekable streams, and SharedArrayBuffer support are available
+        // await reader.read(buffer, { at: 1 });
+
+        // const dirHandle = await root.getDirectoryHandle('New Folder', { create: true });
+        // await root.removeEntry('Old Stuff', { recursive: true });
+
+
+        
+            // var taBlob = new Blob(['Mi nombre es Adolfo'], {type: 'text/plain'});
+            
+            // const pickerOptions = {
+            //     suggestedName: `adolfo.txt`,
+            //     types: [
+            //         {
+            //             description: 'Simple Text File',
+            //             accept: { 'text/plain': ['.txt'], },
+            //         },
+            //     ],
+            // };
+            
+            // const fileHandle = await window.showSaveFilePicker(pickerOptions);
+            
+            // const writableFileStream = await fileHandle.createWritable();
+            
+            // await writableFileStream.write(taBlob);
+            
+            // await writableFileStream.close();
+
+
+
+        // const link = document.querySelector('a.simple');
+ 
+        // let name = 'Monty';
+        // let text = `My name in ${name}. I love writing tutorials.`;
+        
+        // var textBlob = new Blob([text], {type: 'text/plain'});
+        
+        // link.setAttribute('href', URL.createObjectURL(textBlob));
+        // link.setAttribute('download', `${name.toLowerCase()}.txt`);
+            
+    </script>
+</body>
+</html>

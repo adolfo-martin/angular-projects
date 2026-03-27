@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+
+  appdatabase:
+    image: mysql:8.0.41-debian
+    container_name: phones-database-server
+    ports: 
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Bye-5678
+      MYSQL_DATABASE: phones
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Hello1234
+    restart: always
+    networks:
+      - custom-backend
+
+  appweb:
+    image: php:8.4.5-zts-bookworm
+    container_name: phones-web-server
+    ports:
+      - 80:80
+    volumes:
+      - ./www:/var/www/html
+    links:
+      - database
+    environment:
+      APPDB_DB_HOST: appdatabase:3306
+      APPDB_DB_USER: admin
+      APPDB_DB_PASSWORD: Hello1234
+      APPDB_DB_NAME: phones
+    restart: always
+    networks:
+      - custom-backend
+
+networks:
+  backend:
+    name: custom-backend
+    driver: custom-driver

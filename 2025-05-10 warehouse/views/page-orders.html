@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, tr, th, td {
+            border: solid;
+            border-collapse: collapse;
+        }
+
+        .info-bar {
+            background-color: yellow;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+
+    <script type="module" src="./page-orders.js"></script>
+</head>
+<body>
+    <h1>Pedidos</h1>
+
+    <table id="tTabOrders">
+        <thead>
+            <tr>
+                <th colspan="4">Pedidos</th>
+            </tr>
+            <tr>
+                <th>Número</th>
+                <th>Importe</th>
+                <th>Estado</th>
+                <th>Provisionar</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <section class="info-bar">
+        <span>Info: </span>
+        <span id="tSpnInfo"></span>
+    </section>
+</body>
+</html>

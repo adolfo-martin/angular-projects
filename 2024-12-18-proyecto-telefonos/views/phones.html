@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teléfonos</title>
+
+    <link rel="stylesheet" href="/views/style.css">
+    <script type="module" src="/views/phones.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="organization-name">IES Ramón Arcas Meca</div>
+        <h1>Teléfonos de alumnos</h1>
+    </header>
+
+    <main>
+        <form class="container-search" autocomplete="off">
+            <label for="">Nivel:</label>
+            <div id="tDivLevels" class="levels">
+                <input type="radio" checked name="level" id="tRadLevelAll" value="all">
+                <label for="tRadLevelAll">Todos</option>
+            </div>
+
+            <label for="tSelGroups">Grupo:</label>
+            <select id="tSelGroups">
+                <option value="all">Todos</option>
+            </select>
+
+            <label for="tLstPeople">Nombre del alumno:</label>
+            <input list="tDatlstPeople" id="tLstPeople" />
+            <datalist id="tDatlstPeople"></datalist>
+        </form>
+
+        <div class="container-details">
+            <label class="label-name">Nombre:</label><input id="tTxtFullname" disabled>
+            <label class="label-group">Grupo:</label><input id="tTxtGroup" disabled>
+
+            <label class="label-phone1">Teléfono 1:</label><input id="tTxtPhone1" disabled>
+            <label class="label-phone2">Teléfono 2:</label><input id="tTxtPhone2" disabled>
+
+            <label class="label-mother">Madre:</label><input id="tTxtMothername" disabled>
+            <label class="label-mother-phone">Teléfono:</label><input id="tTxtMotherphone" disabled>
+
+            <label class="label-father">Padre:</label><input id="tTxtFathername" disabled>
+            <label class="label-father-name">Teléfono:</label><input id="tTxtFatherphone" disabled>
+        </div>
+
+    </main>
+</body>
+
+</html>

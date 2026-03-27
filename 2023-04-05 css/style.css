@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: grid;
+    place-content: center;
+    background-color: black;
+}
+
+.spinner {
+    position: relative;
+    background-color: darkblue;
+    width: 300px;
+    height: 100px;
+}
+
+.dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: lightcoral;
+    border-radius: 50%;
+    left: calc(var(--i) * 30px);
+    transition-property: transform;
+    transition-duration: 500ms;
+    transition-delay: calc(var(--i) * 100ms);
+}
+
+.spinner:hover .dot {
+    transform: translateY(100px);
+}

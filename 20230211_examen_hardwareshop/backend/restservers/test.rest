@@ -1,0 +1,23 @@
+### Retrieve token success
+POST http://127.0.0.1:8081/api/login_user 
+content-type: application/x-www-form-urlencoded
+
+username=sonia.silverado
+&password=s
+
+### Retrieve sockets success
+GET http://127.0.0.1:8082/api/sockets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE2NzYxMTU4NTEsImV4cCI6MTY3NjEzMDI1MX0.sNKyV20W3MrBH54jW-PTBq2sSKj6898eCaAkewi4n_0
+
+
+### Retrieve processors success
+GET http://127.0.0.1:8082/api/processors
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE2NzYxMTU4NTEsImV4cCI6MTY3NjEzMDI1MX0.sNKyV20W3MrBH54jW-PTBq2sSKj6898eCaAkewi4n_0
+
+### Retrieve processors by socket uuid success
+GET http://127.0.0.1:8082/api/socket/0ddd1e68-832a-4c90-9f23-aba7e2c4806c/processors
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE2NzYxMTU4NTEsImV4cCI6MTY3NjEzMDI1MX0.sNKyV20W3MrBH54jW-PTBq2sSKj6898eCaAkewi4n_0
+
+### Retrieve processor by uuid success
+GET http://127.0.0.1:8082/api/processor/a68556c0-fbf5-458d-b6a2-b3dcaadc64af
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbmlhLnNpbHZlcmFkbyIsImZpcnN0bmFtZSI6IlNvbmlhIiwibGFzdG5hbWUiOiJTaWx2ZXJhZG8iLCJpYXQiOjE2NzYxMTU4NTEsImV4cCI6MTY3NjEzMDI1MX0.sNKyV20W3MrBH54jW-PTBq2sSKj6898eCaAkewi4n_0

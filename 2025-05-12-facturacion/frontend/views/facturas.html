@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, tr, th, td {
+            border: solid;
+            border-collapse: collapse;
+        }
+    </style>
+
+    <script type="module">
+        import InvoicingService from '../services/invoicing.service.js';
+
+        setup();
+
+        async function setup() {
+            const customerId = readCustomerFromUrl();
+            if (customerId) {
+                const service = new InvoicingService();
+                const invoices = await service.retrieveInvoicesByCustomerId(customerId);
+                renderInvoices(invoices);
+            } else {
+                const service = new InvoicingService();
+                const invoices = await service.retrieveInvoices();
+                
+                const promises = invoices.map(invoice => service.retrieveCustomerById(invoice.identificadorCliente));
+                const customersForInvoices = await Promise.all(promises);
+                const invoicesWithCustomerName = invoices.map((invoice, i) => ({ ...invoice, nombreCliente: `${customersForInvoices[i].nombre} ${customersForInvoices[i].apellido}` }));
+
+                renderCustomer(customerId);
+                renderInvoices(invoicesWithCustomerName, customerId);
+            }
+        }
+        
+        function readCustomerFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('cliente');
+        }
+
+
+        async function renderCustomer(customerId) {
+            const service = new InvoicingService();
+            const customer = await service.retrieveCustomerById(customerId);
+            document.querySelector('#tH2Customer').textContent = `Cliente: ${customer.nombre} ${customer.apellido}`;
+        }
+
+
+        function renderInvoices(invoices, customerId = undefined) {
+            const table = document.querySelector('#tTabInvoices>tbody');
+
+            if (customerId) {
+                document.querySelector('#tThCustomer').style.display = 'none';
+            }
+
+            invoices.forEach(invoice => {
+                const nTr = document.createElement('tr');
+                table.appendChild(nTr);
+
+                const nTdIdentificadorFactura = document.createElement('td');
+                nTr.appendChild(nTdIdentificadorFactura);
+                nTdIdentificadorFactura.textContent = invoice.identificadorFactura;
+
+                const nTdFecha = document.createElement('td');
+                nTr.appendChild(nTdFecha);
+                nTdFecha.textContent = invoice.fecha;
+                
+                if (!customerId) {
+                    const nTdIdentificadorCliente = document.createElement('td');
+                    nTr.appendChild(nTdIdentificadorCliente);
+                    nTdIdentificadorCliente.textContent = invoice.nombreCliente; 
+                }
+                
+                const nTdImporte = document.createElement('td');
+                nTr.appendChild(nTdImporte);
+                nTdImporte.textContent = invoice.importe;
+                
+                const nTdEstado = document.createElement('td');
+                nTr.appendChild(nTdEstado);
+                nTdEstado.textContent = invoice.estado;
+
+                if (invoice.estado === 'Pendiente') {
+                    const nTdPaymentReceived = document.createElement('td');
+                    nTr.appendChild(nTdPaymentReceived);
+
+                    const nCheckbox = document.createElement('input');
+                    nCheckbox.setAttribute('type', 'checkbox');
+                    nCheckbox.setAttribute('data-type', 'payment-received');
+                    nCheckbox.setAttribute('data-amount', invoice.importe);
+                    nTdPaymentReceived.appendChild(nCheckbox);
+
+                    nTdPaymentReceived.addEventListener('change', updatePaymentReceivedAmount);
+                }
+            });
+        }
+
+        function updatePaymentReceivedAmount(e) {
+            const nCkeckboxes = document.querySelectorAll('input[type=checkbox][data-type=payment-received]:checked');
+            const amount = Array.from(nCkeckboxes).reduce((acc, cur) => acc += parseInt(cur.dataset.amount), 0);
+            document.querySelector('#tTxtAmountReceived').value = amount;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Facturas</h1>
+
+    <h2 id="tH2Customer"></h2>
+
+    <div style="display: flex; gap: 25px;">
+        <table id="tTabInvoices">
+            <thead>
+                <tr>
+                    <th colspan="6">Facturas</th>
+                </tr>
+                <tr>
+                    <th>Número</th>
+                    <th>Fecha</th>
+                    <th id="tThCustomer">Cliente</th>
+                    <th>Importe</th>
+                    <th>Estado</th>
+                    <th>Pago recibido</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div>
+            <label for=""></label>
+            <input type="text" id="tTxtAmountReceived" value="0" disabled>
+            <br>
+            <button type="button">Registrar pagos recibidos</button>
+        </div>
+    </div>
+</body>
+
+</html>

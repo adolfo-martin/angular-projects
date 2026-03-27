@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pokemons</h1>
+    <h2>Consigue tus pokepuntos</h2>
+    <h4>Enhorabuena. Has conseguido <span id="tSpnPokepoints"></span> pokepuntos.</h4>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', _ => {
+            setupPokepoints()
+        })
+        
+        
+        function setupPokepoints() {
+            const pokepoints = generatePokepoints();
+            document.querySelector('#tSpnPokepoints').textContent = pokepoints;
+            window.sessionStorage.setItem('pokepoints', pokepoints);
+        }
+
+
+        function generatePokepoints() {
+            const MIN = 1000;
+            const MAX = 3000;
+            const number = Math.floor((Math.random() * (MAX - MIN)) + MIN);
+            return number;
+        }
+
+    </script>
+</body>
+</html>

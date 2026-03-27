@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <script type="module" src="../components/tab-order.component.js"></script>
+    <script type="module" src="../components/spinner-waiting.component.js"></script>
+    <script type="module">
+        /**
+         * @type {SpinnerWaitingComponent}
+         */
+        const spinner = document.querySelector('spinner-waiting');
+
+        document.querySelector('tab-order').addEventListener('loadOrderStarted', (event) => {
+            spinner.show();
+        });
+
+        document.querySelector('tab-order').addEventListener('loadOrderFinished', (event) => {
+            spinner.hide();
+        });
+
+        document.querySelector('select').addEventListener('change', (event) => {
+            const orderId = event.target.value;
+            const tabOrder = document.querySelector('tab-order');
+            tabOrder.order = orderId;
+            // tabOrder.setAttribute('order', orderId);
+        });
+
+    </script>
+</head>
+<body>
+    <header>
+        <div class="site-title">ERP Arcas</div>
+    </header>
+    <h1>Pedido</h1>
+
+    <select name="" id="">
+        <option value="1">Pedido 1</option>
+        <option value="2">Pedido 2</option>
+        <option value="3" selected>Pedido 3</option>
+        <option value="4">Pedido 4</option>
+        <option value="5">Pedido 5</option>
+    </select>
+
+    <tab-order order="3"></tab-order>
+    <spinner-waiting></spinner-waiting>
+</body>
+</html>

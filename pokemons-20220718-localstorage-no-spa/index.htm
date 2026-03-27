@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, tr, th, td {
+            border: solid 2px orange;
+            border-collapse: collapse;
+        }
+
+        img {
+            width: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1>POKEMONS</h1>
+
+    <br>
+    <button id="tButShowCardsdeck">Ver mazo</button>
+    <br>
+    <br>
+    <br>
+
+    <table id="tTabPokemons">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tarjeta</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>        
+    </table>
+
+    <script type="module">
+        import {retrievePokemons, retrievePokemonByUrl, retrievePokemonFrontImageByUrl } from './repository.js';
+        import { storePokemonInCardsdesk } from './storage.js';
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            tButShowCardsdeck.addEventListener('pointerdown', _ => {
+                redirectToCardsdeckPage()
+            })
+
+            const pokemons = await retrievePokemons();
+            await renderPokemons(pokemons);
+        })
+
+        async function renderPokemons(pokemons) {
+            const nBody = document.querySelector('#tTabPokemons>tbody');
+            pokemons.forEach(createRowForPokemon)
+
+            async function createRowForPokemon({name, url}) {
+                const nTr = document.createElement('tr')
+                nBody.appendChild(nTr)
+
+                const nTdName = document.createElement('td')
+                nTr.appendChild(nTdName)
+                nTdName.textContent = name
+
+                const imageUrl = await retrievePokemonFrontImageByUrl(url)
+
+                const nTdCard = document.createElement('td')
+                nTr.appendChild(nTdCard)
+
+                const nImage = document.createElement('img')
+                nTdCard.appendChild(nImage)
+                nImage.setAttribute('src', imageUrl)
+
+                const nTdButton = document.createElement('td')
+                nTr.appendChild(nTdButton)
+
+                const nButAddCard = document.createElement('button')
+                nTdButton.appendChild(nButAddCard)
+                nButAddCard.textContent = 'Añadir a mazo'
+                nButAddCard.setAttribute('data-pokemon-name', name)
+                nButAddCard.setAttribute('data-pokemon-url', url)
+                nButAddCard.addEventListener('pointerdown', addPokemonToCardsdesk)
+            }
+        }
+
+
+        function addPokemonToCardsdesk(e) {
+            const nButton = e.target
+            const name = nButton.dataset.pokemonName
+            const url = nButton.dataset.pokemonUrl
+            storePokemonInCardsdesk(name, url)
+        }
+
+
+        function redirectToCardsdeckPage() {
+            window.location = './cardsdeck.htm'
+        }
+    </script>
+</body>
+</html>

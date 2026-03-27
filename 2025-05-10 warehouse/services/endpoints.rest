@@ -1,0 +1,8 @@
+### Retrieve all orders
+GET http://127.0.0.1:3000/api/orders
+
+### Retrieve orders items
+GET http://127.0.0.1:3000/api/order-items
+
+### Retrieve orders items by order id
+GET http://127.0.0.1:3000/api/order-items/1/1

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            background-color: black;
+            display: grid;
+            place-content: center;
+        }
+
+        .bar {
+            width: 100px;
+            height: 15px;
+            --tone1: calc((255 / 12) * var(--i));
+            --tone2: calc((255 / 6) * (6 - var(--i)));
+            --tone3: calc((255 / 12) * (12 - var(--i)));
+            background-color: rgb(var(--tone1), var(--tone2), var(--tone3));
+            animation: spin 2000ms linear calc(var(--i) * 2000ms) infinite normal both;
+            transform-origin: left;
+            position: absolute;
+        }
+
+        @keyframes spin {
+            0% {
+                opacity: 0;
+                rotate: 0deg;
+            }
+            1% {
+                opacity: 1;
+                rotate: 0deg;
+            }
+            100% {
+                opacity: 1;
+                rotate: calc(360deg - (360deg / 12) * var(--i));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner">
+        <div class="bar" style="--i: 0"></div>
+        <div class="bar" style="--i: 1"></div>
+        <div class="bar" style="--i: 2"></div>
+        <div class="bar" style="--i: 3"></div>
+        <div class="bar" style="--i: 4"></div>
+        <div class="bar" style="--i: 5"></div>
+        <div class="bar" style="--i: 6"></div>
+        <div class="bar" style="--i: 7"></div>
+        <div class="bar" style="--i: 8"></div>
+        <div class="bar" style="--i: 9"></div>
+        <div class="bar" style="--i: 10"></div>
+        <div class="bar" style="--i: 11"></div>
+    </div>
+</body>
+</html>

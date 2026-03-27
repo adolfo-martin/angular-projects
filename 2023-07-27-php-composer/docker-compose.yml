@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  pdfserver:
+    image: composer-mpdf:0.2
+    container_name: pdfserver
+    ports:
+      - "8085:80"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+
+# docker cp pdfserver:/var/www/html/vendor .

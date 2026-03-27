@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+    database:
+        image: mysql:8.0.31-debian
+        container_name: db_hardware
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: Hola1234
+            MYSQL_DATABASE: hardware_solutions
+            MYSQL_USER: adolfo
+            MYSQL_PASSWORD: Hola1234
+        volumes:
+            - ./hardwaresolutions.sql:/docker-entrypoint-initdb.d/hardwaresolutions.sql
+
+    phpserver:
+        image: php:7.4.21-apache
+        container_name: php_hardware
+        ports:
+            - "8080:80"
+        volumes:
+            - ./src/:/var/www/html/
+        # depends_on:
+        #     - database

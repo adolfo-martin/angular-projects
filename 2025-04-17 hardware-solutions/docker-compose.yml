@@ -1,0 +1,39 @@
+version: '3.0'
+
+services:
+
+  hs-database-server:
+    image: adomargon/hardware_solutions:1.2
+    container_name: hs-database-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Hola1234
+      MYSQL_DATABASE: hardware_solutions
+      MYSQL_USER: hardware_solutions
+      MYSQL_PASSWORD: Hola1234
+      MYSQL_SERVICE_HOST: hs-database-server
+      MYSQL_SERVICE_PORT: 3306
+    ports:
+      - "3306:3306"
+    networks:
+      - hardware-network
+
+  hs-rest-server:
+    image: hardware-solutions-server-rest:0.8 
+    container_name: hs-rest-server
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      DB_HOST: hs-database-server
+      DB_USER: hardware_solutions
+      DB_PASSWORD: Hola1234
+      DB_NAME: hardware_solutions
+    depends_on:
+      - hs-database-server
+    networks:
+      - hardware-network
+
+networks:
+  hardware-network:
+    driver: bridge

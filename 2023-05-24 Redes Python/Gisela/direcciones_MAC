@@ -1,0 +1,31 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+direccion:str
+direccion: str 
+
+
+repr(): str 
+eq(value:direccionMAC): booles_direccion_correcta(): bool
+
+
+
+

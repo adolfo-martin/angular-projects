@@ -1,0 +1,13 @@
+{
+  "name": "2023-09-08-monad-star-wars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Maybe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}

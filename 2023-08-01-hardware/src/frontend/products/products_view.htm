@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, tr, td {
+            border: solid 5px red;
+            border-collapse: collapse;
+        }
+
+        .products > header {
+            font-size: 3rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .products > main {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <script type="module" src="./TableProductsComponent.js"></script>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', _ => {
+            document.querySelector('table-products')
+                .addEventListener('productSelected', showProductDetail);
+        });
+
+
+        function showProductDetail(e) {
+            const productId = e.detail.id;
+        }
+    </script>
+
+    <article class="products">
+        <header>Productos</header>
+        <main>
+            <table-products></table-products>
+        </main>
+    </article>
+</body>
+</html>

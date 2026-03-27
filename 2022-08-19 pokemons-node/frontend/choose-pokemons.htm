@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 100px;
+        }
+
+        #tDivCardsOfPokemons {
+            border: solid 5px green;
+            display: flex;           
+        }
+
+        #tDivCardsOfPokemons > div {
+            margin: 1rem;
+        }
+        
+        .normal {
+            border: solid 3px cornflowerblue;    
+        }
+
+        .legendary {
+            border: solid 3px silver;    
+        }
+
+        .mythical {
+            border: solid 3px gold;    
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokemons</h1>
+    <h2>Añade tus pokemons favoritos a tu mazo</h2>
+    <h4>Tienes <span id="tSpnPokepoints"></span> pokepuntos.</h4>
+
+    <div id="tDivCardsOfPokemons"></div>
+    <br>
+    <button id="tButPrevPage">Anterior</button>
+    <button id="tButNextPage">Siguiente</button>
+
+
+    <script type="module">
+        import { retrievePokemonsByPage, retrievePokemonExtraInfo } from './repository.js'
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            configureButtonsNextPreviousPage()
+            showPokepoints()
+            await showCardsOfPokemons()
+        })
+        
+
+        function configureButtonsNextPreviousPage() {
+            tButPrevPage.addEventListener('click', _ => {
+                let page = parseInt(window.sessionStorage.getItem('currentPokemonsPage'))
+                if (page === 1)
+                    return;
+                else {
+                    page--;
+                    window.sessionStorage.setItem('currentPokemonsPage', page)
+                    window.location = './choose-pokemons.htm'
+                }                
+            })
+
+            tButNextPage.addEventListener('click', _ => {
+                let page = parseInt(window.sessionStorage.getItem('currentPokemonsPage'))
+                if (page === 1000)
+                    return;
+                else {
+                    page++;
+                    window.sessionStorage.setItem('currentPokemonsPage', page)
+                    window.location = './choose-pokemons.htm'
+                }                
+            })
+        }
+
+        function getCurrentPokemonsPageQuantity() {
+            let page = parseInt(window.sessionStorage.getItem('currentPokemonsPage'))
+            if (!page) {
+                page = 1
+                window.sessionStorage.setItem('currentPokemonsPage', page)
+            }
+
+            let quantity = window.sessionStorage.getItem('currentPokemonsQuantity')
+            if (!quantity) {
+                quantity = 5
+                window.sessionStorage.setItem('currentPokemonsQuantity', quantity)
+            }
+
+            return { page, quantity }
+        }
+
+
+        function showPokepoints() {
+            const pokepoints = window.sessionStorage.getItem('pokepoints');
+            document.querySelector('#tSpnPokepoints').textContent = pokepoints;
+        }
+
+
+        async function showCardsOfPokemons() {
+            const { page, quantity } = getCurrentPokemonsPageQuantity()
+
+            const pokemonsWithoutImage = await retrievePokemonsByPage(page, quantity)
+            const pokemonsWithExtraInfo = await Promise.all(pokemonsWithoutImage.map(retrievePokemonWithExtraInfo))
+            renderPokemons(pokemonsWithExtraInfo)
+
+            async function retrievePokemonWithExtraInfo({id, ...rest}) {
+                const extraInfo = await retrievePokemonExtraInfo(id)
+                return extraInfo
+            }
+
+            function renderPokemons(pokemons) {
+                const nDivCards = document.querySelector('#tDivCardsOfPokemons')
+                pokemons.forEach(renderPokemonRow)
+
+                function renderPokemonRow({id, name, image, is_legendary: isLegendary, is_mythical: isMythical, height, weight, capture_rate: captureRate}) {
+                    const nDivCard = document.createElement('div')
+                    nDivCards.appendChild(nDivCard)
+
+                    if (isLegendary) {
+                        nDivCard.classList.add('legendary')
+                    } else if (isMythical) {
+                        nDivCard.classList.add('mythical')
+                    } else {
+                        nDivCard.classList.add('normal')
+                    }
+
+                    const nDivName = document.createElement('div')
+                    nDivCard.appendChild(nDivName)
+                    nDivName.textContent = name
+
+                    const nDivImage = document.createElement('div')
+                    nDivCard.appendChild(nDivImage)
+
+                    const nImage = document.createElement('img')
+                    nDivImage.appendChild(nImage)
+                    nImage.setAttribute('src', image)
+
+                    const nDivHeight = document.createElement('div')
+                    nDivCard.appendChild(nDivHeight)
+                    nDivHeight.textContent = `Altura: ${height}`
+
+                    const nDivWeight = document.createElement('div')
+                    nDivCard.appendChild(nDivWeight)
+                    nDivWeight.textContent = `Peso: ${weight}`
+
+                    const nDivCaptureRate = document.createElement('div')
+                    nDivCard.appendChild(nDivCaptureRate)
+                    nDivCaptureRate.textContent = `Pokepuntos: ${captureRate}`
+
+                    const nButtonAdd = document.createElement('button')
+                    nDivCard.appendChild(nButtonAdd)
+                    nButtonAdd.setAttribute('data-pokemon-id', id)
+                    nButtonAdd.textContent = 'Añadir al mazo'
+                    nButtonAdd.addEventListener('click', e => {
+                        const nButton = e.target;
+                        const pokemonId = parseInt(nButton.dataset.pokemonId);
+                        addPokemonToCardsdeck(pokemonId)
+                        
+                    })
+                }
+            }
+        }
+        
+        
+        function addPokemonToCardsdeck(pokemonId) {
+            const cardsdeck = retrieveCardsdeckFromStorage()
+            cardsdeck.push(pokemonId)
+            window.sessionStorage.setItem('cardsdeck', JSON.stringify(cardsdeck))
+
+            function retrieveCardsdeckFromStorage() {
+                const cardsdeckRaw = window.sessionStorage.getItem('cardsdeck')
+                let cardsdeck;
+                if (!cardsdeckRaw) 
+                    cardsdeck = []
+                else
+                    cardsdeck = JSON.parse(cardsdeckRaw)
+                return cardsdeck
+            }
+
+
+        }
+    </script>
+</body>
+</html>

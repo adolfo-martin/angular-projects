@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb:10.4.10
+    container_name: hardwareshop_dbserver
+    restart: always
+    environment:
+      MYSQL_DATABASE: hardwareshop
+      MYSQL_ROOT_PASSWORD: Hola1234
+      MYSQL_USER: hardwareshop
+      MYSQL_PASSWORD: Hola1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./hardwareshop.sql:/docker-entrypoint-initdb.d/hardwareshop.sql
+
+  authentication:
+    image: adomargon/node-authentication:1.0
+    container_name: authentication_restserver
+    restart: always
+    ports:
+      - "8081:80"
+  # playmobil:
+  #   image: adomargon/server_playmobil:0.15
+  #   container_name: playmobil_container
+  #   ports:
+  #     - "8082:8082"

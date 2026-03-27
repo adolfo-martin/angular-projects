@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .switch {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            padding: 20px;
+            height: fit-content;
+            width: fit-content;
+            background-color: brown;
+        }
+    </style>
+
+    <script type="module" src="components/port-rj45.js"></script>
+    <script type="module" src="components/wire-copper.js"></script>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', function () {
+            createSwitch();
+
+            const portRj45_01 = document.querySelector('port-rj45[mac="04:11:22:33:44:55"]');
+            const portRj45_02 = document.querySelector('port-rj45[mac="07:11:22:33:44:55"]');
+            const wireCopper = document.querySelector('wire-copper');
+
+            wireCopper.addEventListener('wireConnectedOnBothSides', e => {
+                portRj45_01.setAttribute('connected', true);
+                portRj45_02.setAttribute('connected', true);    
+            });
+
+            wireCopper.addEventListener('wireNotConnectedOnBothSides', e => {
+                portRj45_01.setAttribute('connected', false);
+                portRj45_02.setAttribute('connected', false);    
+            });
+
+            wireCopper.portA = portRj45_01;
+            wireCopper.portB = portRj45_02;
+        });
+
+        function createSwitch() {
+            const nSwitch = document.querySelector('.switch');
+            for (let i = 1; i <= 8; i++) {
+                const nPortRj45 = document.createElement('port-rj45');
+                nPortRj45.setAttribute('mac', `0${i}:11:22:33:44:55`);
+                nSwitch.appendChild(nPortRj45);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="switch"></div>
+
+    <!-- <port-rj45 mac="01:11:22:33:44:55"></port-rj45>
+    <port-rj45 mac="02:11:22:33:44:55"></port-rj45> -->
+    <wire-copper></wire-copper>
+
+</body>
+
+</html>

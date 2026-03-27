@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div#tDivCardsdesk {
+            border: solid 2px blue;
+            padding: 1rem;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .card {
+            border: solid 2px green;
+            display: inline-block;
+            margin: 1rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>POKEMONS</h1>
+
+    <br>
+    <h2>Mazo de cartas</h2>
+
+    <br>
+    <div id="tDivCardsdesk"></div>
+
+    <script type="module">
+        import {retrievePokemons, retrievePokemonByUrl, retrievePokemonFrontImageByUrl } from './repository.js';
+        import { getCardsdesk } from './storage.js';
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            const cardsdesk = getCardsdesk()
+            await renderCardsdesk(cardsdesk)
+        })
+
+
+        async function renderCardsdesk(cardsdesk) {
+            const nDivCardsdesk = document.querySelector('#tDivCardsdesk')
+
+            cardsdesk.forEach(renderCard)
+
+            async function renderCard(card) {
+                const nDivCard = document.createElement('div')
+                nDivCardsdesk.appendChild(nDivCard)
+                nDivCard.classList.add('card')
+
+                const nDivName = document.createElement('div')
+                nDivCard.appendChild(nDivName)
+                nDivName.textContent = card.name
+                
+                const nImage = document.createElement('img')
+                nDivCard.appendChild(nImage)
+                const imageUrl = await retrievePokemonFrontImageByUrl(card.url)
+                nImage.setAttribute('src', imageUrl)
+            }
+        }
+    </script>
+</body>
+</html>

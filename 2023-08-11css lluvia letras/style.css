@@ -1,0 +1,43 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #000;
+    color: white;
+    display: grid;
+    place-items: center;
+}
+
+.centered-container {
+    border: solid red 10px;
+    width: 50%;
+    height: 50%;
+    position: relative;
+}
+
+.letter {
+    position: absolute;
+    animation-name: downing;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+}
+
+@keyframes downing {
+    from {
+        top: 0%;
+    }   
+    to {
+        top: 100%;
+        display: none;
+    }
+}

@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+
+  tomcat:
+    container-name: "tomcat-demo"
+    image: tomcat:jre21
+    ports:
+      - "8080:8080"

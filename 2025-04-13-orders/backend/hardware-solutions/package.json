@@ -1,0 +1,16 @@
+{
+  "name": "hardware-solutions",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A Node.js Express application for managing hardware solutions.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
