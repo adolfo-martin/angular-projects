@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        body {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 1 0;
+            border: solid 5px red;
+        }
+    </style>
+
+    <script type="module" src="./router.js"></script>
+    <script type="module" src="../components/navbar-app-component.js"></script>
+</head>
+<body>
+    <header>
+        <navbar-app></navbar-app>
+    </header>
+
+    <main class="main-app"></main>
+</body>
+</html>

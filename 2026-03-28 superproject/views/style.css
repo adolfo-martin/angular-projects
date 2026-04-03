@@ -1,0 +1,26 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+
+    --color-100: #eef2f4;
+    --color-200: #c6deea;
+    --color-500: #9a9afb;
+    --color-900: #01014e;
+
+    --primary: var(--color-900);
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-height: 100dvh;
+}
+
+.btn {
+    background-color: var(--primary);
+    color: white;
+
+}
