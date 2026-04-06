@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "temperature-converter": {
+      "type": "stdio",
+      "command": "C:/Users/adolfo/Desktop/2025-08-06-only-mcp/mcp-proyect/.venv/Scripts/python.exe",
+      "args": ["-m", "temperature_converter_mcp"]
+    }
+  }
+}

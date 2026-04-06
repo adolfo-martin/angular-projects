@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+svg {
+    border: solid 5px red;
+}
+
+.bar {
+    fill: red;
+    transition: fill .3s ease;
+    cursor: pointer;
+    font-family: Helvetica, sans-serif;
+}
+
+.bar text {
+    color: black;
+}
+
+.bar:hover,
+.bar:focus {
+    fill: black;
+}
+
+.bar:hover text,
+.bar:focus text {
+    fill: red;
+}
+
+
+.details {
+    position: absolute;
+    display: none;
+}
+
+.bar:hover + .details {
+    display: block;
+}
+
+.details > rect {
+    fill: darkblue;
+    z-index: 100;
+}
+
+.details > text {
+    fill: yellow;
+    z-index: 100;
+}

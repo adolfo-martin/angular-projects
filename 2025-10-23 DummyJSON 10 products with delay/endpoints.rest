@@ -1,0 +1,5 @@
+GET https://dummyjson.com/products?limit=10&delay=2000
+
+###
+
+GET https://dummyjson.com/products/1?limit=10&delay=2000

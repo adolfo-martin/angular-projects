@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "temperature-converter-mcp"
+version = "1.0.0"
+description = "MCP server for temperature conversion between Celsius and Fahrenheit"
+authors = [
+    {name = "Teacher", email = "teacher@example.com"}
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "pydantic>=2.0.0"
+]
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.scripts]
+temperature-converter-mcp = "temperature_converter_mcp:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/temperature_converter_mcp"]
+
+[tool.hatch.envs.default]
+path = ".venv"

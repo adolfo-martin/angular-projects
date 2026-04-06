@@ -1,0 +1,22 @@
+[project]
+name = "ollama-mcp-trainer"
+version = "0.1.0"
+description = "MCP server for Ollama training and experimentation"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "mcp>=1.0.0",
+    "httpx>=0.27.0",
+    "ollama>=0.3.0",
+    "pydantic>=2.0.0",
+]
+
+[project.scripts]
+ollama-mcp-trainer = "src.ollama_mcp_trainer:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ollama_mcp_trainer"]

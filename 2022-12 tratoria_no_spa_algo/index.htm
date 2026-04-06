@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <h1>TRATORIA ARCAS</h1>
+
+    <h2>Nuestras deliciosas pizzas</h2>
+    <div id="eDivPizzas"></div>
+    <img id="eImgPizza" />
+
+    <br>
+    <br>
+    <div>
+        <button id="tButAddProductToOrder">Añadir producto al pedido</button>
+        <button id="tButPrintOrder">Imprimir pedido</button>
+    </div>
+
+    <br>
+    <br>
+    <h2>Ingredientes</h2>
+    <ol id="eOlIngredients"></ol>
+
+    <h2>Ingredientes adicionales (+0.50€)</h2>
+    <div id="tDivAddicionalIngredients">
+    </div>
+
+    <h2>Importe</h2>
+    <div id="eDivPrice"></div>
+
+
+
+    <script type="module">
+        import { retrievePizzas, retrieveAllIngredients, retrieveIngredientsByPizza, retrieveIngredientById } from './repositories.js'
+        import Order from './Order.js';
+        import { redirectToErrorPage, redirectToOrderPage } from './redirections.js'
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            window.localStorage.clear();
+            setupButtonAddProductToOrder();
+            setupButtonPrintOrder();
+
+            try {
+                const pizzas = await retrievePizzas();
+                await renderPizzas(pizzas);
+            } catch (error) {
+                redirectToErrorPage(error);
+            }
+        })
+
+
+        function setupButtonAddProductToOrder() {
+            const nButton = document.querySelector('#tButAddProductToOrder');
+            nButton.addEventListener('click', addProductToOrder)
+        }
+
+
+        function setupButtonPrintOrder() {
+            const nButton = document.querySelector('#tButPrintOrder');
+            nButton.addEventListener('click', printOrder)
+        }
+
+
+        function addProductToOrder(_) {
+            const selectedRadio = document.querySelector('input[type="radio"][name="pizza"]:checked');
+            if (!selectedRadio) {
+                alert('Seleccione una pizza, por favor.')
+                return;
+            }
+
+            const pizza = { id: selectedRadio.value, name: selectedRadio.dataset.name };
+
+            const order = new Order();
+            const nCheckboxAdditionalIngredients = Array.from(document.querySelectorAll('input[type="checkbox"]:checked').values());
+            const additionalIngredients = nCheckboxAdditionalIngredients.map(checkbox => ({ id: checkbox.value, name: checkbox.dataset.name }));
+            order.addProduct(pizza, additionalIngredients);
+        }
+
+
+        function printOrder(_) {
+            redirectToOrderPage();
+        }
+
+
+        function renderPizzas(pizzas) {
+            pizzas.forEach(function (pizza) {
+                let nInput = document.createElement("input");
+                nInput.setAttribute("type", "radio");
+                nInput.setAttribute("id", `tRad${pizza.codigo}`);
+                nInput.setAttribute("name", "pizza");
+                nInput.setAttribute("value", pizza.codigo);
+                nInput.setAttribute('data-name', pizza.nombre);
+                nInput.setAttribute('data-price', pizza.precio);
+                nInput.setAttribute('data-image', pizza.foto);
+                nInput.foto = pizza.foto;
+                nInput.addEventListener('change', e => {
+                    showIngredients(e);
+                    showAddicionalIngredients(e);
+                });
+
+                let nLabel = document.createElement("label");
+                nLabel.setAttribute("for", `tRad${pizza.codigo}`);
+                nLabel.appendChild(nInput);
+
+                let nText = document.createTextNode(pizza.nombre);
+                nLabel.appendChild(nText);
+
+                eDivPizzas.appendChild(nLabel);
+            });
+        }
+
+
+        async function showIngredients(e) {
+            while (eOlIngredients.lastChild) {
+                eOlIngredients.removeChild(eOlIngredients.lastChild);
+            }
+
+            let nRadio = e.target;
+            let pizzaId = nRadio.value;
+
+            eImgPizza.src = "./imagenes/" + nRadio.dataset.image;
+            eDivPrice.textContent = nRadio.dataset.price;
+
+            let ingredients = await retrieveIngredientsByPizza(pizzaId);
+            ingredients.forEach(showIngredient);
+
+            async function showIngredient(ingredient) {
+                const { codigo: id, nombre: name, foto: photo } = await retrieveIngredientById(ingredient);
+                const nLi = document.createElement("li");
+                nLi.setAttribute("id", `tLi${id}`);
+                nLi.setAttribute("data-ingredient", id);
+                nLi.setAttribute("data-name", name);
+                eOlIngredients.appendChild(nLi);
+
+                let nText = document.createTextNode(name);
+                nLi.appendChild(nText);
+            }
+        }
+
+
+        async function showAddicionalIngredients(e) {
+            let pizzaId = e.target.value;
+            let pizzaIngredients = await retrieveIngredientsByPizza(pizzaId);
+
+            const allIngredients = await retrieveAllIngredients();
+            const additionalIngredients = [];
+
+            allIngredients.forEach(ingredient => {
+                if (pizzaIngredients.indexOf(ingredient) === -1) {
+                    additionalIngredients.push(ingredient);
+                }
+            });
+
+            while (tDivAddicionalIngredients.lastChild) {
+                tDivAddicionalIngredients.removeChild(tDivAddicionalIngredients.lastChild);
+            }
+
+            additionalIngredients.forEach(ingredient => {
+                showIngredient(ingredient);
+            });
+
+            async function showIngredient(ingredient) {
+                const { codigo: id, nombre: name, foto: photo } = await retrieveIngredientById(ingredient);
+
+                let nInput = document.createElement("input");
+                nInput.setAttribute("type", "checkbox");
+                nInput.setAttribute("id", id + "a");
+                nInput.setAttribute("value", id);
+                nInput.setAttribute("data-name", name);
+                nInput.addEventListener('change', updatePrice)
+
+                let nLabel = document.createElement("label");
+                nLabel.setAttribute("for", id + "a");
+                nLabel.appendChild(nInput);
+
+                let nText = document.createTextNode(name);
+                nLabel.appendChild(nText);
+
+                tDivAddicionalIngredients.appendChild(nLabel);
+
+                tDivAddicionalIngredients.appendChild(document.createElement("br"));
+            }
+        }
+
+
+        function updatePrice() {
+            let importeActual = parseFloat(eDivPrice.textContent);
+            this.checked
+                ? importeActual += 0.50
+                : importeActual -= 0.50;
+            eDivPrice.textContent = importeActual;
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div[role=tooltip] {
+            display: none;
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+        }
+
+        label:hover+div[role="tooltip"] {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>VIDEOCLUB</h1>
+
+    <h2>Géneros</h2>
+    <div id="tDivGenres"></div>
+
+    <script type="module">
+        import { retrieveGenres } from './repositories.js'
+        import { redirectToErrorPage, redirectToMoviesPage } from './redirections.js'
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            try {
+                const genres = await retrieveGenres();
+                renderGenres(genres);
+            } catch (error) {
+                redirectToErrorPage(error);
+            }
+        })
+
+
+        function renderGenres(genres) {
+            const nDivGenres = document.querySelector('#tDivGenres');
+
+            genres.forEach(({ identificador: id, nombre: name, descripcion: description }) => {
+                const nRadio = document.createElement('input');
+                nDivGenres.appendChild(nRadio);
+                nRadio.setAttribute('type', 'radio')
+                nRadio.setAttribute('name', 'genre')
+                nRadio.setAttribute('value', id)
+                nRadio.setAttribute('id', `tRad${id}`)
+                nRadio.addEventListener('change', showMoviesofGenre)
+
+                const nLabel = document.createElement('label');
+                nDivGenres.appendChild(nLabel)
+                nLabel.setAttribute('for', `tRad${id}`)
+                nLabel.setAttribute('title', description)
+                nLabel.textContent = name;
+
+                nDivGenres.appendChild(document.createElement('br'))
+            })
+        }
+
+
+        function showMoviesofGenre(e) {
+            const genre = e.target.value
+            redirectToMoviesPage(genre)
+        }
+
+
+        //---------------------------------------------------------------
+        function mostrarPeliculas() {
+            $("#etTabPeliculas").empty();
+
+            let genero = $(event.target).val();
+
+            $.ajax({
+                url: "http://localhost/videoclub/controlador.php",
+                data: {
+                    accion: "conseguir_peliculas",
+                    genero: genero
+                },
+                type: "get",
+                dataType: "json"
+            })
+                .done(function (respuesta) {
+                    $.each(respuesta.resultado.peliculas, function (i, pelicula) {
+                        let nodTr = $("<tr>");
+                        $("#etTabPeliculas").append(nodTr);
+                        let nodTd1 = $(`<td>${pelicula.titulo}</td>`);
+                        nodTr.append(nodTd1);
+                        let nodTd2 = $(`<td></td>`);
+                        nodTr.append(nodTd2);
+                        mostrarDetallesPelicula(pelicula.director, pelicula.interpretes, nodTd2);
+                    });
+                })
+                .fail(respuesta =>
+                    console.log("Error: mostrarPeliculas")
+                );
+        }
+
+        //---------------------------------------------------------------
+        function mostrarDetallesPelicula(director, interpretes, celda) {
+
+            function mostrarDirector() {
+                $.ajax({
+                    url: "http://localhost/videoclub/controlador.php",
+                    data: {
+                        accion: "conseguir_persona",
+                        persona: director
+                    },
+                    type: "get",
+                    dataType: "json"
+                })
+                    .done(function (respuesta) {
+                        celda.append($("<p><b>Director</b></p>"));
+                        celda.append($(`<p>${respuesta.resultado.persona.nombre}</p>`));
+                        mostrarInterpretes();
+                    })
+                    .fail(respuesta =>
+                        console.log("Error: mostrarDetallesPelicula")
+                    );
+            }
+
+            function mostrarInterpretes() {
+                celda.append($("<p><b>Interpretes</b></p>"));
+
+                $(interpretes).each(function (i, interprete) {
+                    $.ajax({
+                        url: "http://localhost/videoclub/controlador.php",
+                        data: {
+                            accion: "conseguir_persona",
+                            persona: interprete
+                        },
+                        type: "get",
+                        dataType: "json"
+                    })
+                        .done(function (respuesta) {
+                            celda.append($(`<p>${respuesta.resultado.persona.nombre}</p>`));
+                        })
+                        .fail(respuesta =>
+                            console.log("Error: mostrarDetallesPelicula")
+                        );
+                });
+            }
+
+            mostrarDirector();
+        }
+        //---------------------------------------------------------------
+    </script>
+</body>
+
+</html>

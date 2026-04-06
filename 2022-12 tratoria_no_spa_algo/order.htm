@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>TRATORIA ARCAS</h1>
+
+    <h2>Su pedido</h2>
+    <ul id="eUlOrder"></ul>
+
+    <script type="module">
+        import { retrievePizzas, retrieveAllIngredients, retrieveIngredientsByPizza, retrieveIngredientById } from './repositories.js'
+        import Order from './Order.js';
+        import { redirectToErrorPage } from './redirections.js'
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            const order = extractOrderFromMemory();
+            renderOrder(order);
+        })
+
+        function extractOrderFromMemory() {
+            const orderRaw = localStorage.getItem('order');
+            if (!orderRaw) {
+                redirectToErrorPage('No hay ningún producto en el pedido')
+                return;
+            }
+            const order = JSON.parse(orderRaw);
+            return order;
+        }
+
+        async function renderOrder(order) {
+            order.forEach(orderLine => {
+                const nLiPizza = document.createElement('li');
+                eUlOrder.appendChild(nLiPizza);
+                nLiPizza.textContent = `Pizza ${orderLine.pizza.name}`;
+
+                const nUlAdditionaIngredients = document.createElement('ul');
+                eUlOrder.appendChild(nUlAdditionaIngredients);
+
+                orderLine.additionalIngredients.forEach(ingredient => {
+                    const nLiIngredient = document.createElement('li');
+                    nUlAdditionaIngredients.appendChild(nLiIngredient);
+                    nLiIngredient.textContent = ingredient.name;
+                })
+            })
+        }
+    </script>
+</body>
+
+</html>

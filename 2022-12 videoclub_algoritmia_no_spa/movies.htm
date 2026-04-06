@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table,
+        tr,
+        th,
+        td {
+            border: solid 2px blue;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>VIDEOCLUB</h1>
+
+    <h2>Películas</h2>
+
+    <div>
+        <input type="checkbox" name="parametros" id="tChkDirectors">
+        <label for="tChkDirectors">Mostrar directores</label>
+        <input type="checkbox" name="parametros" id="tChkActors">
+        <label for="tChkActors">Mostrar intérpretes</label>
+    </div>
+
+    <br>
+    <table id="tTabMovies">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Director</th>
+                <th>Protagonistas</th>
+                <th>Precio</th>
+                <th>Alquilar</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br>
+    <label>Total alquiler: </label><input type="text" id="tTxtTotalRent" disabled value="0">
+
+
+    <script type="module">
+        import { retrieveMoviesByGenre, retrievePersonById } from './repositories.js'
+        import { redirectToErrorPage, redirectToMoviesPage } from './redirections.js'
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            try {
+                const nChkDirectors = document.querySelector('#tChkDirectors')
+                const nChkActors = document.querySelector('#tChkActors')
+
+                const genre = retrieveGenreFromUrl();
+                const movies = await retrieveMoviesByGenre(genre);
+                renderMovies(movies);
+
+                nChkDirectors.addEventListener('change', _ => renderMovies(movies))
+                nChkActors.addEventListener('change', _ => renderMovies(movies))
+            } catch (error) {
+                redirectToErrorPage(error);
+            }
+        })
+
+
+        function retrieveGenreFromUrl() {
+            const urlParams = window.location.search;
+            const params = new URLSearchParams(urlParams);
+            const genre = params.get('genre');
+            if (!genre) {
+                throw 'No se ha podido obtener el género de la url';
+            }
+            return genre;
+        }
+
+
+        function renderMovies(movies) {
+            const nTbodyMovies = document.querySelector('#tTabMovies>tbody');
+
+            while (nTbodyMovies.hasChildNodes())
+                nTbodyMovies.removeChild(nTbodyMovies.firstChild);
+
+            movies.forEach(async ({ identificador: id, titulo: title, director: directorId, interpretes: actors, precio: price }) => {
+                const nTr = document.createElement('tr');
+                nTbodyMovies.appendChild(nTr);
+
+                const nTdTitle = document.createElement('td');
+                nTr.appendChild(nTdTitle);
+                nTdTitle.textContent = title;
+
+                const nTdDirector = document.createElement('td');
+                nTr.appendChild(nTdDirector);
+                if (isCheckedShowDirectors()) {
+                    const director = await retrievePersonById(directorId)
+                    nTdDirector.textContent = director.nombre;
+                }
+
+                const nTdActors = document.createElement('td');
+                nTr.appendChild(nTdActors);
+                if (isCheckedShowActors()) {
+                    const nOlActors = document.createElement('ol');
+                    nTdActors.appendChild(nOlActors);
+                    actors.forEach(renderActor)
+
+                    async function renderActor(actorId) {
+                        const actor = await retrievePersonById(actorId);
+                        const nLi = document.createElement('li');
+                        nOlActors.appendChild(nLi);
+                        nLi.textContent = actor.nombre;
+                    }
+                }
+
+                const nTdPrice = document.createElement('td');
+                nTr.appendChild(nTdPrice);
+                nTdPrice.textContent = price;
+
+                const nTdRent = document.createElement('td');
+                nTr.appendChild(nTdRent);
+                const nChkRent = document.createElement('input');
+                nChkRent.setAttribute('type', 'checkbox');
+                nChkRent.setAttribute('data-price', price);
+                nChkRent.addEventListener('change', calculateRent)
+                nTdRent.appendChild(nChkRent);
+            })
+
+            document.querySelector('#tTxtTotalRent').value = 0;
+        }
+
+
+        function calculateRent(e) {
+            const nCheckbox = e.target;
+            const price = parseFloat(nCheckbox.dataset.price);
+
+            const nTotalRent = document.querySelector('#tTxtTotalRent');
+            const total = parseFloat(nTotalRent.value);
+
+            if (nCheckbox.checked) {
+                nTotalRent.value = total + price;
+            } else {
+                nTotalRent.value = total - price;
+            }
+
+        }
+
+        function isCheckedShowDirectors() {
+            const nChkDirectors = document.querySelector('#tChkDirectors')
+            return nChkDirectors.checked
+        }
+
+
+        function isCheckedShowActors() {
+            const nChkActors = document.querySelector('#tChkActors')
+            return nChkActors.checked
+        }
+    </script>
+</body>
+
+</html>

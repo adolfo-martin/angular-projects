@@ -1,0 +1,11 @@
+I am a teacher of Python and Artificial Intelligence. 
+I need teach my students how to create an ollama client for a mcp server for ia. The server is running locally.
+I know locally, the mcp server is setting up with " C:/Users/adolfo/Desktop/2025-08-06-only-mcp/mcp-proyect/.venv/Scripts/python.exe -m temperature_converter_mcp"
+REQUERIMENTS.
+I want to use a Python virtual environment.
+I want only to use libraries from ollama framework.
+I need to show on terminal the name of all the tools running within mpc server.
+I need one test for every tool in the mcp server.
+I need a Jupyter Notebook which explain all the operations and code.
+RESULT
+Successful test of every tool in the mcp server.

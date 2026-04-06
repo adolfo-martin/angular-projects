@@ -1,0 +1,5 @@
+I am a Python developer. I will develop an app which opens a CSV file and generate the chunks from that file with ollama libraries.
+
+REQUERIMENTS
+- Open the CSV file, read the first row to know the names of the fields, where each field is separated by semicolon. Generate a tuple of dictionaries, each dictionary is a row in the csv file.
+- Chuck the tuple with ollama libraries.

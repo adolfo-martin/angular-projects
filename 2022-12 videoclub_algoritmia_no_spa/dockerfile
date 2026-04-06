@@ -1,0 +1,11 @@
+FROM php:8.1.2-apache
+RUN mkdir -p /var/www/html/videoclub
+WORKDIR /var/www/html/videoclub
+COPY controlador.php .
+COPY modelo.php .
+EXPOSE 80
+
+# docker build -t ws-videoclub:1.0 .
+# docker tag ws-videoclub:1.0 adomargon/ws-videoclub:1.0
+# docker push adomargon/ws-videoclub:1.0
+# docker pull adomargon/ws-videoclub:1.0

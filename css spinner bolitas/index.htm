@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .spinner {
+            background-color: black;
+            width: 200px;
+            height: 200px;
+        }
+
+        .shape {
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+            transform: rotate(calc((360deg / 12) * var(--i)));
+            position: absolute;
+        }
+
+        .point {
+            background-color: red;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            left: calc(100px - 10px);
+            animation-name: desplazamiento;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-delay: calc(var(--i) * calc(1s / 12));
+        }
+
+        @keyframes desplazamiento {
+            from {
+                top: 0px;
+            }
+
+            to {
+                top: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="spinner">
+        <div class="shape" style="--i: 0">
+            <div class="point" style="--i: 0"></div>
+        </div>
+        <div class="shape" style="--i: 1">
+            <div class="point" style="--i: 1"></div>
+        </div>
+        <div class="shape" style="--i: 2">
+            <div class="point" style="--i: 2"></div>
+        </div>
+        <div class="shape" style="--i: 3">
+            <div class="point" style="--i: 3"></div>
+        </div>
+        <div class="shape" style="--i: 4">
+            <div class="point" style="--i: 4"></div>
+        </div>
+        <div class="shape" style="--i: 5">
+            <div class="point" style="--i: 5"></div>
+        </div>
+        <div class="shape" style="--i: 6">
+            <div class="point" style="--i: 6"></div>
+        </div>
+        <div class="shape" style="--i: 7">
+            <div class="point" style="--i: 7"></div>
+        </div>
+        <div class="shape" style="--i: 8">
+            <div class="point" style="--i: 8"></div>
+        </div>
+        <div class="shape" style="--i: 9">
+            <div class="point" style="--i: 9"></div>
+        </div>
+        <div class="shape" style="--i: 10">
+            <div class="point" style="--i: 10"></div>
+        </div>
+        <div class="shape" style="--i: 11">
+            <div class="point" style="--i: 11"></div>
+        </div>
+    </div>
+</body>
+
+</html>

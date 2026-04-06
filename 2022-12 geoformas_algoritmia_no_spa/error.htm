@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>ERROR</h1>
+    <p id="tParError"></p>
+    <script>
+        'use strict';
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            const message = retrieveErrorFromUrl();
+            document.querySelector('#tParError').textContent = message;
+        });
+
+        function retrieveErrorFromUrl() {
+            const urlParams = window.location.search;
+            const params = new URLSearchParams(urlParams);
+            const message = params.get('message');
+            if (!message) {
+                return 'No se ha podido obtener el mensaje de error de la url';
+            }
+            return message;
+        }
+    </script>
+</body>
+
+</html>

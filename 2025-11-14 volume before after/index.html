@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+
+    <script type="module">
+        tRngVolume.dataset.value = tRngVolume.value;
+        if (tRngVolume.dataset.value >=8) {
+            tRngVolume.dataset.volume = 'high';
+        } else if (tRngVolume.dataset.value >= 4) {
+            tRngVolume.dataset.volume = 'medium';
+        } else if (tRngVolume.dataset.value > 0) {
+            tRngVolume.dataset.volume = 'low';
+        } else {
+            tRngVolume.dataset.volume = 'mute';
+        }
+
+        tRngVolume.addEventListener('change', _ => {
+            tRngVolume.dataset.value = tRngVolume.value;
+            if (tRngVolume.dataset.value >= 8) {
+                tRngVolume.dataset.volume = 'high';
+            } else if (tRngVolume.dataset.value >= 4) {
+                tRngVolume.dataset.volume = 'medium';
+            } else if (tRngVolume.dataset.value > 0) {
+                tRngVolume.dataset.volume = 'low';
+            } else {
+                tRngVolume.dataset.volume = 'mute';
+            }
+        });
+    </script>
+</head>
+<body>
+    <input type="range" id="tRngVolume" class="controller-volume" 
+        min="0" max="10" value="2">
+    <b>otra cosa</b>
+</body>
+</html>

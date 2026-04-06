@@ -1,0 +1,11 @@
+I am a teacher of Python and Artificial Intelligence. 
+I need teach my students how to create an mcp server for ia. 
+REQUERIMENTS.
+I want to use a Python virtual environment.
+I want only to use libraries from ollama framework.
+I need two mcp tools, a tool converts celsius degrees to farenheit degrees, the another converts farenheit degrees to celsius degrees.
+I need the instructions on how to set up the mcp server and run.
+I need to know the different ways to connect locally to the mcp server.
+I need a Jupyter Notebook which explain all the operations and code.
+RESULT
+The result is a running mcp server.

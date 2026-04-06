@@ -1,0 +1,14 @@
+<table *ngIf="products$ | async as products">
+    <thead>
+        <tr>
+            <th>Nombre: </th>
+            <th>Precio: </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products">
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+        </tr>
+    </tbody>
+</table>

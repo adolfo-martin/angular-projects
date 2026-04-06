@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+    <h1>Continentes:</h1>
+    <div id="eDivContinents"></div>
+
+    <!-- <div>
+        <p><b>Tipos de accidentes geográficos:</b></p>
+        <div id="etDivTiposAccidentesGeograficos"></div>
+    </div>
+
+    <div>
+        <p><b>Accidentes geograficos:</b></p>
+        <ol type="1" id="etTabAccidentesGeograficosCheckbox"></ol>
+    </div> -->
+
+    <script type="module" type="text/javascript">
+        import { redirectToLandformPage, redirectToErrorPage } from './code.js';
+        import { retrieveContinents } from './repository.js';
+
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            try {
+                const continents = await retrieveContinents();
+                showContinentsRadios(continents);
+            } catch (error) {
+                redirectToErrorPage(error);
+                return;
+            }
+        });
+
+
+        function showContinentsRadios(continents) {
+            const nDivContinents = document.querySelector('#eDivContinents')
+
+            continents.forEach(continent => {
+                const nRadio = document.createElement('input');
+                nRadio.setAttribute('type', 'radio');
+                nRadio.setAttribute('name', 'continent');
+                nRadio.setAttribute('value', continent.clave);
+                nRadio.setAttribute('id', `tRad${continent.clave}`);
+                nRadio.addEventListener('change', showLandformsOfContinent);
+                nDivContinents.appendChild(nRadio);
+
+                const nLabel = document.createElement('label');
+                nLabel.setAttribute('for', `tRad${continent.clave}`);
+                nDivContinents.appendChild(nLabel);
+
+                const nText = document.createTextNode(continent.nombre);
+                nLabel.appendChild(nText);
+            });
+        }
+
+
+        function showLandformsOfContinent(e) {
+            const continent = e.target.value;
+            redirectToLandformPage(continent);
+        }
+
+        function mostrarTiposAccidentesGeograficos() {
+            let url = "./controlador.php";
+            let datos = "operacion=obtener_tipos_accidentes_geograficos";
+
+            let exito = function (respuesta) {
+                for (let tipo_accidente of respuesta.tipos_accidentes_geograficos) {
+                    let nRadio = document.createElement("input");
+                    nRadio.setAttribute("type", "checkbox");
+                    nRadio.setAttribute("id", "etChkTipoAccidenteGeografico_" + tipo_accidente.clave);
+                    nRadio.setAttribute("name", "accidente_geografico_" + tipo_accidente.clave);
+                    nRadio.setAttribute("value", "si");
+                    nRadio.setAttribute("onchange", "showGeographicFeatureCheckbox()");
+                    etDivTiposAccidentesGeograficos.appendChild(nRadio);
+
+                    let nText = document.createTextNode(tipo_accidente.denominacion);
+                    etDivTiposAccidentesGeograficos.appendChild(nText);
+
+                    g_tipos_accidentes_geograficos.push(tipo_accidente.clave);
+                }
+            }
+
+            let error = (respuesta) => { };
+
+            ajax(url, datos, exito, error);
+        }
+
+    </script>
+</body>
+
+</html>

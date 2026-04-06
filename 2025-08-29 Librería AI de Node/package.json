@@ -1,0 +1,19 @@
+{
+  "name": "ai-agents-project",
+  "version": "1.0.0",
+  "description": "Learning project to use the AI library with Node.js",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": ["ai", "llm", "node.js", "agents"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ai": "^3.3.0",
+    "ollama-ai-provider": "^1.2.0",
+    "dotenv": "^16.4.5"
+  }
+}

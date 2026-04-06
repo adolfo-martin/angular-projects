@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        section {
+            /* display: inline-flex;
+            flex-direction: column; */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 150px);
+            gap: 1rem;
+        }
+
+        article {
+            display: inline-block;
+            border: solid;
+            margin: 1rem;
+        }
+    </style>
+
+    <script type="module">
+        let offset = 0;
+
+        await setup();
+
+        async function setup() {
+            const pokemons = await retrievePokemons(offset);
+            renderPokemons(pokemons);
+        }
+
+        // const callback = (entries, observer) => {
+        //     entries.forEach((entry) => {
+        //         if (entry.isIntersecting) {
+        //             console.log(entry);
+        //             observer.disconnect();
+        //         }
+        //     })
+        // }
+
+        // const options = {}
+        // const observer = new IntersectionObserver(callback, options)
+        // let target = document.querySelector('.element')
+        // observer.observe(target)
+
+
+        async function retrievePokemons(offset = 0) {
+            const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const pokemons = data.results;
+
+            const promises = pokemons.map(({name, url}) => retrievePokemon(name, url));
+            const pokemons2 = await Promise.all(promises);
+            return pokemons2;
+        }
+
+
+        async function retrievePokemon(name, url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            return {
+                name,
+                image: data.sprites.front_default,
+            };
+        }
+
+
+        function renderPokemons(pokemons) {
+            const nContenedor = document.querySelector('#tSctPokemons');
+            pokemons.forEach((pokemon, i, pokemons) => {
+                const nArticle = document.createElement('article');
+                nContenedor.appendChild(nArticle);
+
+                const nDiv = document.createElement('div');
+                nArticle.appendChild(nDiv);
+                nDiv.textContent = pokemon.name;
+
+                const nImage = document.createElement('img');
+                nArticle.appendChild(nImage);
+                nImage.src = pokemon.image;
+
+                if (i + 1 === pokemons.length) {
+                    const options = {}
+                    const observer = new IntersectionObserver(callback, options);
+                    observer.observe(nArticle);
+                }
+            });
+        }
+
+        function callback(entries, observer) {
+            entries.forEach(async (entry) => {
+                if (entry.isIntersecting) {
+                    console.log(entry);
+                    observer.disconnect();
+
+                    offset += 20;
+                    const pokemons = await retrievePokemons(offset);
+                    renderPokemons(pokemons);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <section id="tSctPokemons"></section>
+</body>
+
+</html>

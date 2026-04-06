@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+
+        table,
+        tr,
+        th {
+            border: solid 3px blue;
+            border-collapse: collapse;
+        }
+
+        #tSctPokemons {
+            display: flex;
+            column-gap: 1em;
+        }
+
+        #tDivPokemon {
+            padding: 1em;
+            align-self: center;
+            display: grid;
+            grid-template-columns: auto auto;
+            height: fit-content;
+            background-color: aquamarine;
+            gap: 0.5em;
+
+            & label {
+                text-align: right;
+            }
+        }
+
+        .buttons-container {
+            grid-column: 1 / span 2;
+            display: flex;
+            justify-content: center;
+            column-gap: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module" src="./PokemonsController.js"></script>
+
+    <section id="tSctPokemons">
+        <table id="tTabPokemons">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div id="tDivPokemon">
+            <label>Nombre: </label>
+            <input type="text" id="tTxtName">
+
+            <label>Altura: </label>
+            <input type="text" id="tTxtHeight">
+
+            <label>Peso: </label>
+            <input type="text" id="tTxtWeight">
+
+            <div class="buttons-container">
+                <input type="button" id="tBtnAdd" value="Añadir">
+                <input type="button" id="tBtnRemove" value="Eliminar">
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        async function drawChart() {
+            // var data = google.visualization.arrayToDataTable([
+            //     ['Year', 'Sales', 'Expenses'],
+            //     ['2004', 1000, 400],
+            //     ['2005', 1170, 460],
+            //     ['2006', 660, 1120],
+            //     ['2007', 1030, 540]
+            // ]);
+
+            const measures = await retrieveData()
+
+            var data = google.visualization.arrayToDataTable(measures);
+
+            var options = {
+                title: 'Company Performance',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+
+        async function retrieveData() {
+            const url = 'http://127.0.0.1/api/generation/2022-02-05'
+            const response = await fetch(url)
+            const data = await response.json()
+            const measures = data.generation
+            const neededMeasures = measures
+                .map(measure => ({
+                    hour: measure.hour,
+                    eolica: measure.measures.eol,
+                    fotovoltaica: measure.measures.solFot,
+                    nuclear: measure.measures.nuc,
+                    gasNatural: measure.measures.cc,
+                }))
+                .map(measure => [
+                    measure.hour,
+                    measure.eolica,
+                    measure.fotovoltaica,
+                    measure.nuclear,
+                    measure.gasNatural,
+                ])
+            const measuresWithHeader = [
+                ['Hour', 'Eólica', 'Fotovoltáica', 'Nuclear', 'Gas natural'],
+                ...neededMeasures
+            ]
+            return measuresWithHeader
+        }
+
+        retrieveData()
+    </script>
+</head>
+
+<body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+}
+
+.container-prompt {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    gap: 20px;
+    height: 100px;
+    width: 50dvw;
+    border: solid;
+}
+
+#tTxaPrompt {
+    flex-grow: 1;
+    border: none;
+}
+
+#tBtnRunPrompt {
+    border: none;
+    background: none;
+    font-weight: bold;
+    font-size: inherit;
+    cursor: pointer;
+}

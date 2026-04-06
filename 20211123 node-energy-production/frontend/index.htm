@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- https://css-tricks.com/how-to-make-charts-with-svg/ -->
+
+    <h1>Generación eléctrica nacional</h1>
+
+    <svg class="chart" role="img" id="tSvgDiaryMeasures">
+        <title id="title">A bar chart showing information</title>
+        <desc id="desc">4 apples; 8 bananas; 15 kiwis; 16 oranges; 23 lemons</desc>
+    </svg>
+
+    <script type="module">
+        import { buildChart } from './code.js'
+        
+        document.addEventListener('DOMContentLoaded', buildChart)
+    </script>
+</body>
+</html>

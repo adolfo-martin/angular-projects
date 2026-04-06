@@ -1,0 +1,22 @@
+GET http://127.0.0.1:5555/api/cars
+
+### 
+GET http://127.0.0.1:5555/api/cars/616813e10654888c5c7f275b
+
+###
+POST http://127.0.0.1:5555/api/cars
+content-type: application/x-www-form-urlencoded
+
+brand=Ferrari
+&model=Testarossa
+
+###
+PUT http://127.0.0.1:5555/api/cars
+content-type: application/x-www-form-urlencoded
+
+id=616813e10654888c5c7f275b
+&brand=Tesla
+&model=Model 3
+
+### 
+DELETE http://127.0.0.1:5555/api/cars/6167f218d47f1e9cdd6254ac

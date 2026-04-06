@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,
+        tr,
+        th,
+        td {
+            border: solid 2px green;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Geoformas:</h1>
+        <table id="tTabLandforms">
+            <thead>
+                <tr>
+                    <th>Geoforma</th>
+                    <th>Tipo</th>
+                    <th>Altura-Longitud</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <br>
+        <div>
+            <label>Río más corto: </label>
+            <span id="tSpnShortestRiver"></span>
+        </div>
+        <div>
+            <label>Río más largo: </label>
+            <span id="tSpnLongestRiver"></span>
+        </div>
+        <div>
+            <label>Montaña más baja: </label>
+            <span id="tSpnlowestMountain"></span>
+        </div>
+        <div>
+            <label>Montaña mas alta </label>
+            <span id="tSpnHighestMountain"></span>
+        </div>
+    </div>
+
+    <script type="module" type="text/javascript">
+        import { redirectToErrorPage } from './code.js';
+        import { retrieveLandformsOfContinent, retrieveLandformById } from './repository.js';
+
+        document.addEventListener('DOMContentLoaded', async _ => {
+            try {
+                const continent = retrieveContinentFromUrl();
+                const landforms = await retrieveLandformsOfContinent(continent);
+                const landformsData = await prepareLandformsDataForTable(landforms)
+                showLandformsItems(landformsData);
+            } catch (error) {
+                redirectToErrorPage(error);
+            }
+        });
+
+
+        async function prepareLandformsDataForTable(landforms) {
+            try {
+                const landformsPromises = landforms.map(landform => retrieveLandformById(landform.clave))
+                const landformsData = await Promise.all(landformsPromises);
+                return landformsData;
+            } catch (error) {
+                redirectToErrorPage(error);
+            }
+        }
+
+
+        function retrieveContinentFromUrl() {
+            const urlParams = window.location.search;
+            const params = new URLSearchParams(urlParams);
+            const continent = params.get('continent');
+            if (!continent) {
+                throw 'No se ha podido obtener el continente de la url';
+            }
+            return continent;
+        }
+
+
+        function showLandformsItems(landforms) {
+            const nOlLandforms = document.querySelector('#tTabLandforms>tbody');
+
+            // while (nOlLandforms.hasChildNodes()) {
+            //     nOlLandforms.removeChild(nOlLandforms.lastChild);
+            // }
+
+            let nameShortestRiver = ''
+            let lengthShortestRiver = 1000000
+            let nameLongestRiver = '';
+            let lengthLongestRiver = -1;
+            let namelowestMountain = ''
+            let lengthlowestMountain = 1000000
+            let nameHighestMountain = '';
+            let lengthHighestMountain = -1;
+
+            for (const landform of landforms) {
+                // if (document.getElementById("etChkTipoAccidenteGeografico_" + tipo_accidente.tipo).checked) {
+
+                const nTr = document.createElement('tr');
+                nOlLandforms.appendChild(nTr);
+
+                const nTd = document.createElement('td');
+                nTd.appendChild(document.createTextNode(landform.nombre));
+                nTr.appendChild(nTd);
+
+                if (landform.tipo === 'ri') {
+                    const nTd2 = document.createElement('td');
+                    nTd2.appendChild(document.createTextNode('río'));
+                    nTr.appendChild(nTd2);
+
+                    const nTd3 = document.createElement('td');
+                    nTd3.appendChild(document.createTextNode(landform.longitud));
+                    nTr.appendChild(nTd3);
+
+                    if (landform.longitud < lengthShortestRiver) {
+                        nameShortestRiver = landform.nombre;
+                        lengthShortestRiver = landform.longitud;
+                    }
+                    if (landform.longitud > lengthLongestRiver) {
+                        nameLongestRiver = landform.nombre;
+                        lengthLongestRiver = landform.longitud;
+                    }
+                } else {
+                    const nTd2 = document.createElement('td');
+                    nTd2.appendChild(document.createTextNode('montaña'));
+                    nTr.appendChild(nTd2);
+
+                    const nTd3 = document.createElement('td');
+                    nTd3.appendChild(document.createTextNode(landform.altitud));
+                    nTr.appendChild(nTd3);
+
+                    if (landform.altitud < lengthlowestMountain) {
+                        namelowestMountain = landform.nombre;
+                        lengthlowestMountain = landform.altitud;
+                    }
+                    if (landform.altitud > lengthHighestMountain) {
+                        nameHighestMountain = landform.nombre;
+                        lengthHighestMountain = landform.altitud;
+                    }
+                }
+                // }
+            }
+
+            showStatistics(nameShortestRiver, lengthShortestRiver, nameLongestRiver, lengthLongestRiver,
+                namelowestMountain, lengthlowestMountain, nameHighestMountain, lengthHighestMountain);
+        }
+
+
+        function showStatistics(
+            nameShortestRiver, lengthShortestRiver, nameLongestRiver, lengthLongestRiver,
+            namelowestMountain, lengthlowestMountain, nameHighestMountain, lengthHighestMountain
+        ) {
+            document.querySelector('#tSpnShortestRiver').textContent =
+                `${nameShortestRiver} (${lengthShortestRiver} km)`;
+            document.querySelector('#tSpnLongestRiver').textContent =
+                `${nameLongestRiver} (${lengthLongestRiver} km)`;
+
+            document.querySelector('#tSpnlowestMountain').textContent =
+                `${namelowestMountain} (${lengthlowestMountain} km)`;
+            document.querySelector('#tSpnHighestMountain').textContent =
+                `${nameHighestMountain} (${lengthHighestMountain} km)`;
+        }
+
+
+        // function showTypesOfLandforms() {
+        //     let exito = function (respuesta) {
+        //         for (let tipo_accidente of respuesta.tipos_accidentes_geograficos) {
+        //             let nRadio = document.createElement("input");
+        //             nRadio.setAttribute("type", "checkbox");
+        //             nRadio.setAttribute("id", "etChkTipoAccidenteGeografico_" + tipo_accidente.clave);
+        //             nRadio.setAttribute("name", "accidente_geografico_" + tipo_accidente.clave);
+        //             nRadio.setAttribute("value", "si");
+        //             nRadio.setAttribute("onchange", "showGeographicFeatureCheckbox()");
+        //             etDivTiposAccidentesGeograficos.appendChild(nRadio);
+
+        //             let nText = document.createTextNode(tipo_accidente.denominacion);
+        //             etDivTiposAccidentesGeograficos.appendChild(nText);
+
+        //             g_tipos_accidentes_geograficos.push(tipo_accidente.clave);
+        //         }
+        //     }
+
+        //     let error = (respuesta) => { };
+
+        //     ajax(url, datos, exito, error);
+        // }
+    </script>
+</body>
+
+</html>

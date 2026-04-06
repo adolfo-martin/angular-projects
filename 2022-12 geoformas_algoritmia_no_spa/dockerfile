@@ -1,0 +1,11 @@
+FROM php:8.1.2-apache
+RUN mkdir -p /var/www/html/geoformas
+WORKDIR /var/www/html/geoformas
+COPY controlador.php .
+COPY modelo.php .
+EXPOSE 80
+
+# docker build -t ws-geoformas:1.0 .
+# docker tag ws-geoformas:1.0 adomargon/ws-geoformas:1.0
+# docker push adomargon/ws-geoformas:1.0
+# docker pull adomargon/ws-geoformas:1.0
