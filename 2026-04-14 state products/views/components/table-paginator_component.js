@@ -1,26 +1,24 @@
 import { Product } from '../../models/product.model.js';
 import { StateService } from '../../services/state-service.js';
-import { TablePaginatorComponent } from './table-paginator_component.js';
 
-export class TableProductsComponent extends HTMLElement {
+export class TablePaginatorComponent extends HTMLElement {
     /** @type { {products: Product[], pageSize: number, currentPage: number} } */
-    tableModel = undefined;
+    PaginatorModel = undefined;
 
     template = `
-        <table>
-            <tbody></tbody>
-        </table>
-
-        <table-paginator></table-paginator>
+        <div class="button-page button-first">1</div>
+        <div class="button-page button-next">></div>
+        <div class="button-page button-prev"><</div>
+        <div class="button-page button-last">L</div>
 
         <style>
-            table, tr, th, td {
-                border: solid;
-                border-collapse: collapse;
+            :host {
+                display: flex;
+                gap: 1rem;
             }
 
-            img {
-                height: 4rem;
+            .button-page {
+                border: solid 2px blue;
             }
         </style>
     `;
@@ -89,4 +87,4 @@ export class TableProductsComponent extends HTMLElement {
     }
 }
 
-window.customElements.define('table-products', TableProductsComponent);
+window.customElements.define('table-paginator', TablePaginatorComponent);
