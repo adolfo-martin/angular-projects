@@ -5,9 +5,9 @@ export class ProductsService {
     /**
      * @returns { Promise<Product[]> }
      */
-    async retrieveProducts(pageSize = 10, pageNumber = 0) {
+    async retrieveProducts(initialSkip = 0, pageSize = 5) {
         try {
-            const url = `https://dummyjson.com/products?delay=1000&limit=${pageSize}&skip=${pageNumber}`;
+            const url = `https://dummyjson.com/products?delay=1000&skip=${initialSkip}&limit=${pageSize}`;
             const response = await fetch(url);
             /** @type { {products: {id: number, title: string, price: number, thumbnail: string}[]} } */
             const data = await response.json();

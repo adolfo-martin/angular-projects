@@ -11,10 +11,12 @@ export class TableProductsComponent extends HTMLElement {
         </table>
 
         <section class="paginator">
-            <div class="button-page button-first">1</div>
-            <div class="button-page button-prev"><</div>
-            <div class="button-page button-next">></div>
-            <div class="button-page button-last">?</div>
+            <button class="button-page button-first">1</button>
+            <button class="button-page button-prev"><</button>
+            <button class="button-page button-next">></button>
+            <button class="button-page button-last">?</button>
+
+            <div id="tDivRange" class="range"></div>
         </section>
         
 
@@ -46,7 +48,7 @@ export class TableProductsComponent extends HTMLElement {
 
     /**
      * 
-     * @param { {products: Product[], pageSize: number, currentPage: number} } tableModel 
+     * @param { {products: Product[], pageSize: number, initialSkip: number} } tableModel 
      */
     setTableModel(tableModel) {
         this.tableModel = tableModel;
@@ -57,17 +59,23 @@ export class TableProductsComponent extends HTMLElement {
     connectedCallback() {
         this.render();
 
-        const nButFirst = this.shadow.querySelector('.button-first');
-        nButFirst.addEventListener('click', _ => {
-            this.dispatchEvent(new CustomEvent('pageselected'), {
+        this.shadow.querySelector('.button-first').addEventListener('click', _ => {
+            this.dispatchEvent(new CustomEvent('pageselected', {
                 detail: {
                     page: 0
                 }
-            });
+            }));
         });
 
-        const nButNext = this.shadow.querySelector('.button-next');
-        nButNext.addEventListener('click', _ => {
+        this.shadow.querySelector('.button-prev').addEventListener('click', _ => {
+            this.dispatchEvent(new CustomEvent('pageselected', {
+                detail: {
+                    page: this.tableModel.currentPage - 1,
+                }
+            }));
+        });
+
+        this.shadow.querySelector('.button-next').addEventListener('click', _ => {
             this.dispatchEvent(new CustomEvent('pageselected', {
                 detail: {
                     page: this.tableModel.currentPage + 1,
@@ -75,6 +83,15 @@ export class TableProductsComponent extends HTMLElement {
             }));
         });
 
+        this.shadow.querySelector('.button-last').addEventListener('click', _ => {
+            this.dispatchEvent(new CustomEvent('pageselected', {
+                detail: {
+                    page: this.tableModel.productsQuantity % this.tableModel.pageSize 
+                        ? Math.trunc(this.tableModel.productsQuantity / this.tableModel.pageSize)
+                        : Math.trunc(this.tableModel.productsQuantity / this.tableModel.pageSize) - 1
+                }
+            }));
+        });
     }
 
     render() {
@@ -109,8 +126,17 @@ export class TableProductsComponent extends HTMLElement {
     }
 
     renderPaginator() {
-        const nButLast = this.shadow.querySelector('.button-last');
-        nButLast.textContent = this.tableModel.productsQuantity;
+        this.shadow.querySelector('.button-last').textContent = this.tableModel.productsQuantity;
+        const initialPosition = this.tableModel.currentPage * this.tableModel.pageSize + 1;
+        const finalPosition = initialPosition + this.tableModel.pageSize - 1;
+        this.shadow.querySelector('.range').textContent = `Productos de ${initialPosition} a ${finalPosition}`;
+        if (this.tableModel.currentPage === 0) {
+            this.shadow.querySelector('.button-first').setAttribute('disabled', undefined);
+            this.shadow.querySelector('.button-prev').setAttribute('disabled', undefined);
+        } else {
+            this.shadow.querySelector('.button-first').removeAttribute('disabled');
+            this.shadow.querySelector('.button-prev').removeAttribute('disabled');
+        }
     }
 }
 

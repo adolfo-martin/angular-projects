@@ -5,16 +5,19 @@ import { TableProductsComponent } from './components/table-products-component.js
 await setup();
 
 async function setup() {
+    let currentPage = 0;
+    let pageSize = 5;
+
     const productsService = new ProductsService();
-    const products = await productsService.retrieveProducts();
+    const products = await productsService.retrieveProducts(0, pageSize);
     const productsQuantity = await productsService.retrieveProductsQuantity();
 
     /** @type { TableProductsComponent } */
     const nTabProducts = document.querySelector('#tTabProducts');
     nTabProducts.setTableModel({
         products,
-        pageSize: 5,
-        currentPage: 0,
+        pageSize,
+        currentPage,
         productsQuantity,
     });
 
@@ -24,10 +27,10 @@ async function setup() {
     nTabProducts.addEventListener('pageselected', async e => {
         const page = e.detail.page;
         const productsService = new ProductsService();
-        const products = await productsService.retrieveProducts(5, page);
+        const products = await productsService.retrieveProducts(page * pageSize, pageSize);
         nTabProducts.setTableModel({
             products,
-            pageSize: 5,
+            pageSize,
             currentPage: page,
             productsQuantity,
         });
