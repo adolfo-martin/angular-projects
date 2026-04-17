@@ -23,8 +23,10 @@ async function setup() {
 
 function showSpinnerLoading(hasToShow) {
     if (hasToShow) {
+        document.querySelector('spinner-loading').setAttribute('status', 'loading');
         document.querySelector('spinner-loading').classList.remove('hidden');
     } else {
+        document.querySelector('spinner-loading').setAttribute('status', 'none');
         document.querySelector('spinner-loading').classList.add('hidden');
     }
 }

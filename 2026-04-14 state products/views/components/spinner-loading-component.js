@@ -5,6 +5,10 @@ export class SpinnerLoadingComponent extends HTMLElement {
         </dialog>
 
         <style>
+            :host {
+                overflow: hidden;
+            }
+
             dialog {
                 padding: 20px;
             }
@@ -32,13 +36,25 @@ export class SpinnerLoadingComponent extends HTMLElement {
         this.shadow = this.attachShadow({ mode: 'open' });
     }
 
+    static observedAttributes = ['status'];
+
     connectedCallback() {
         this.render();
     }
 
     render() {
         this.shadow.innerHTML = this.template;
-        this.shadow.querySelector('dialog').showModal();
+        // this.shadow.querySelector('dialog').showModal();
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'status') {
+            if (newValue === 'loading') {
+                this.shadow.querySelector('dialog')?.showModal();
+            } else {
+                this.shadow.querySelector('dialog')?.close();
+            }
+        }
     }
 }
 
