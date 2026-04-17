@@ -75,7 +75,8 @@ export class TableProductsComponent extends HTMLElement {
             }));
         });
 
-        this.shadow.querySelector('.button-next').addEventListener('click', _ => {
+        const btn = this.shadow.querySelector('.button-next');
+        btn.addEventListener('click', _ => {
             this.dispatchEvent(new CustomEvent('pageselected', {
                 detail: {
                     page: this.tableModel.currentPage + 1,
