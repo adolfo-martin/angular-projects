@@ -19,13 +19,17 @@ export class SelectorCategoriesComponents extends HTMLElement {
             .container-categories {
                 border: solid;
                 display: grid;
-                grid-template-columns: repeat(auto-fit, 250px);
+                grid-template-columns: repeat(auto-fit, 200px);
                 place-content: center;
                 gap: 1rem;
             }
 
             .card-category {
                 border: solid;
+            }
+
+            img {
+                height: 100px;
             }
         </style>
     `;

@@ -1,4 +1,4 @@
-import { CATEGORIES_URL } from '../config.js';
+import { CATEGORIES_URL, CATEGORY_URL } from '../config.js';
 import { Category } from '../models/category-model.js';
 
 export class CategoriesService {
@@ -19,15 +19,16 @@ export class CategoriesService {
     }
 
     /**
+     * @param {string} category 
      * @returns { Promise<string> }
      */
-    async retrieveFirstImageOfCategory() {
+    async retrieveFirstImageOfCategory(categoryId) {
         try {
-            const response = await fetch(CATEGORIES_URL);
-            /** @type { {slug: string, name: string }[] } */
+            const response = await fetch(CATEGORY_URL + `/${categoryId}`);
+            /** @type { {products: { thumbnail: string }[]} } */
             const data = await response.json();
-            const categories = data.map(({slug, name}) => new Category(slug, name));
-            return categories;
+            const image = data.products[0].thumbnail;
+            return image;
         } catch (error) {
             throw new CategoriesServiceException(error.message);
         }
