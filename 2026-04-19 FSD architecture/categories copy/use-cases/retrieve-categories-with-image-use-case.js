@@ -2,7 +2,16 @@ import { CategoriesService } from '../services/categories-service.js';
 import { UseCaseException } from './usecase-exception.js';
 
 export class RetrieveCategoriesWithImageUseCase {
-    
+    #categoriesService;
+
+    /**
+     * 
+     * @param {CategoriesService} categoriesService 
+     */
+    constructor(categoriesService) {
+        this.#categoriesService = categoriesService;
+    }
+
     /**
      * 
      * @param { unknown | undefined } options 
@@ -11,16 +20,12 @@ export class RetrieveCategoriesWithImageUseCase {
      */
     async execute(options = undefined) {
         try {
-            const service = new CategoriesService();
-            const categories = await service.retrieveCategories();
+            const categories = await this.#categoriesService.retrieveCategories();
         
-            const promises = categories.map(({id}) => service.retrieveFirstImageOfCategory(id));
+            const promises = categories.map(({ id }) => this.#categoriesService.retrieveFirstImageOfCategory(id));
             const images = await Promise.all(promises);
-            const categoriesWithImages = categories.map(({id, name}, i) => ({id, name, image: images[i] }));
-        
-            const selector = document.querySelector('selector-categories');
-            selector.setSelectorModel({ categories: categoriesWithImages });
-            
+            const categoriesWithImages = categories.map(({id, name}, i) => ({id, name, image: images[i] }));        
+            return categoriesWithImages;
         } catch (error) {
             throw new UseCaseException(`[RetrieveCategoriesWithImageUseCase.execute()] cause: ${error.message}`);
         }
