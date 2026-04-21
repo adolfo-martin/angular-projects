@@ -1,36 +1,17 @@
 import { Category } from '../models/category-model.js';
+import { SelectorCategoriesComponent } from './selector-card-categories-component.js';
 
-export class SelectorCategoriesComponents extends HTMLElement {
+export class PanelCategoriesComponents extends HTMLElement {
     #shadow;
     /** @type { {categories: {id: string, name: string, image: string}[]} } */
     #selectorModel;
 
     #template = `
-        <section class="container-categories">
-            <template class="template-card-category">
-                <div class="card-category" data-category-id="">
-                    <header></header>
-                    <img/>
-                </div>
-            </template>
-        </section>
+        <h1></h1>
+        
+        <selector-card-categories></selector-card-categories>
 
         <style>
-            .container-categories {
-                border: solid;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, 200px);
-                place-content: center;
-                gap: 1rem;
-            }
-
-            .card-category {
-                border: solid;
-            }
-
-            img {
-                height: 100px;
-            }
         </style>
     `;
 
@@ -66,4 +47,4 @@ export class SelectorCategoriesComponents extends HTMLElement {
     }
 }
 
-window.customElements.define('selector-categories', SelectorCategoriesComponents);
+window.customElements.define('panel-categories', PanelCategoriesComponents);
