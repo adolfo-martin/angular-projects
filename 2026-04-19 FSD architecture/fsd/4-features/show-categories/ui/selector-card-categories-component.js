@@ -1,8 +1,9 @@
-import { Category } from '../models/category-model.js';
+import { Category } from '../models2/category-model.js';
 
 export class SelectorCategoriesComponent extends HTMLElement {
     #shadow;
-    /** @type { {categories: {id: string, name: string, image: string}[]} } */
+    /** @typedef { {categories: {id: string, name: string, image: string}[]} } SelectorModel */
+    /** @type { SelectorModel } */
     #selectorModel;
 
     #template = `
@@ -36,9 +37,13 @@ export class SelectorCategoriesComponent extends HTMLElement {
 
     constructor() {
         super();
-        this.#shadow = this.attachShadow({mode: 'open'});        
+        this.#shadow = this.attachShadow({ mode: 'open' });
     }
 
+    /**
+     * 
+     * @param {SelectorModel} selectorModel 
+     */
     setSelectorModel(selectorModel) {
         this.#selectorModel = selectorModel;
         this.render();
@@ -47,7 +52,7 @@ export class SelectorCategoriesComponent extends HTMLElement {
     connectedCallback() {
         this.render();
     }
-    
+
     render() {
         this.#shadow.innerHTML = this.#template;
 

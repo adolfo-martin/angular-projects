@@ -1,4 +1,5 @@
-import { Category } from '../models/category-model.js';
+import { CategoriesService } from '../api/categories-service.js';
+import { Category } from '../models2/category-model.js';
 import { SelectorCategoriesComponent } from './selector-card-categories-component.js';
 
 export class PanelCategoriesComponents extends HTMLElement {
@@ -7,17 +8,20 @@ export class PanelCategoriesComponents extends HTMLElement {
     #selectorModel;
 
     #template = `
-        <h1></h1>
+        <h1 class="panel-title">Categorías</h1>
         
         <selector-card-categories></selector-card-categories>
 
         <style>
+            .panel-title {
+                text-transform: uppercase;
+            }
         </style>
     `;
 
     constructor() {
         super();
-        this.#shadow = this.attachShadow({mode: 'open'});        
+        this.#shadow = this.attachShadow({ mode: 'open' });
     }
 
     setSelectorModel(selectorModel) {
@@ -25,10 +29,14 @@ export class PanelCategoriesComponents extends HTMLElement {
         this.render();
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         this.render();
+
+        const service = new CategoriesService();
+        const categories = await service.retrieveCategories();
+
     }
-    
+
     render() {
         this.#shadow.innerHTML = this.#template;
 
