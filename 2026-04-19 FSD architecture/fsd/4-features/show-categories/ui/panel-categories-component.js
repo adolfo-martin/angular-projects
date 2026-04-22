@@ -1,11 +1,12 @@
-import { CategoriesService } from '../api/categories-service.js';
-import { Category } from '../models2/category-model.js';
+import { restService } from '../api/index.js';
+import { storeService, Category } from '../model/index.js';
 import { SelectorCategoriesComponent } from './selector-card-categories-component.js';
 
 export class PanelCategoriesComponents extends HTMLElement {
     #shadow;
+    #storeService = storeService;
+    #restService = restService;
     /** @type { {categories: {id: string, name: string, image: string}[]} } */
-    #selectorModel;
 
     #template = `
         <h1 class="panel-title">Categorías</h1>
@@ -24,34 +25,19 @@ export class PanelCategoriesComponents extends HTMLElement {
         this.#shadow = this.attachShadow({ mode: 'open' });
     }
 
-    setSelectorModel(selectorModel) {
-        this.#selectorModel = selectorModel;
-        this.render();
-    }
-
     async connectedCallback() {
         this.render();
 
-        const service = new CategoriesService();
-        const categories = await service.retrieveCategories();
+        const categories = await this.#restService.retrieveCategories();
+        this.#storeService.setValue('categories', categories);
 
+        /** @type { SelectorCategoriesComponent } */
+        const nSelector = this.#shadow.querySelector('selector-card-categories');
+        nSelector.setSelectorModel({ categories });
     }
 
     render() {
         this.#shadow.innerHTML = this.#template;
-
-        const nContainer = this.#shadow.querySelector('section.container-categories');
-        const template = this.#shadow.querySelector('template.template-card-category');
-
-        if (this.#selectorModel) {
-            this.#selectorModel.categories.forEach(category => {
-                const cloneCard = document.importNode(template.content, true);
-                cloneCard.querySelector('.card-category').setAttribute('data-category-id', category.id);
-                cloneCard.querySelector('header').textContent = category.name;
-                cloneCard.querySelector('img').src = category.image;
-                nContainer.appendChild(cloneCard);
-            });
-        }
     }
 }
 

@@ -1,4 +1,4 @@
-import { Category } from '../models2/category-model.js';
+import { Category } from '../model/index.js';
 
 export class SelectorCategoriesComponent extends HTMLElement {
     #shadow;
@@ -42,7 +42,7 @@ export class SelectorCategoriesComponent extends HTMLElement {
 
     /**
      * 
-     * @param {SelectorModel} selectorModel 
+     * @param { {categories: {id: string, name: string, image: string}[]} } selectorModel 
      */
     setSelectorModel(selectorModel) {
         this.#selectorModel = selectorModel;
@@ -71,4 +71,4 @@ export class SelectorCategoriesComponent extends HTMLElement {
     }
 }
 
-window.customElements.define('selector-categories', SelectorCategoriesComponent);
+window.customElements.define('selector-card-categories', SelectorCategoriesComponent);

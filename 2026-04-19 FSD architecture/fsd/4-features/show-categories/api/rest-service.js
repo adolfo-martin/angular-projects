@@ -1,7 +1,7 @@
-import { CATEGORIES_URL, CATEGORY_URL } from '../../../config.js';
+import { CATEGORIES_URL, CATEGORY_URL } from '../config/config.js';
 import { Category } from '../../../5-entities/category-model.js';
 
-export class CategoriesService {
+export class RestService {
 
     /**
      * @returns { Promise<Category[]> }
