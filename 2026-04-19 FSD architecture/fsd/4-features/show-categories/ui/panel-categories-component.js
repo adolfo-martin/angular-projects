@@ -1,6 +1,7 @@
 import { restService } from '../api/index.js';
 import { storeService, Category } from '../model/index.js';
 import { SelectorCategoriesComponent } from './selector-card-categories-component.js';
+import { UiException } from './ui-exception.js';
 
 export class PanelCategoriesComponents extends HTMLElement {
     #shadow;
@@ -28,12 +29,31 @@ export class PanelCategoriesComponents extends HTMLElement {
     async connectedCallback() {
         this.render();
 
-        const categories = await this.#restService.retrieveCategories();
-        this.#storeService.setValue('categories', categories);
+        this.#storeService.addObserver('categories', categories => {
+            /** @type { SelectorCategoriesComponent } */
+            const nSelector = this.#shadow.querySelector('selector-card-categories');
+            nSelector.setSelectorModel({ categories });
+        });
 
-        /** @type { SelectorCategoriesComponent } */
-        const nSelector = this.#shadow.querySelector('selector-card-categories');
-        nSelector.setSelectorModel({ categories });
+        try {
+            const categories = await this.#restService.retrieveCategories();
+
+            const promises = categories.map(({ id }) => this.#restService.retrieveFirstImageOfCategory(id));
+            const images = await Promise.all(promises);
+            const categoriesWithImages = categories.map(({ id, name }, i) => ({ id, name, image: images[i] }));
+            this.#storeService.setValue('categories', categoriesWithImages);
+        } catch (error) {
+            throw new UiException(`[PanelCategoriesComponents.connectedCallback()] cause: ${error.message}`);
+        }
+
+        // this.render();
+
+        // const categories = await this.#restService.retrieveCategories();
+        // this.#storeService.setValue('categories', categories);
+
+        // /** @type { SelectorCategoriesComponent } */
+        // const nSelector = this.#shadow.querySelector('selector-card-categories');
+        // nSelector.setSelectorModel({ categories });
     }
 
     render() {

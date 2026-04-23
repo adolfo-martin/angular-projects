@@ -18,6 +18,7 @@ export class StoreService {
      */
     setValue(key, value) {
         const item = this.#store.get(key) ?? { value: value, callbacks: [] };
+        item.value = value;
         this.#store.set(key, item);
         this.#dispatchValueChanged(key, value);
     }
@@ -30,6 +31,7 @@ export class StoreService {
     addObserver(key, callback) {
         const item = this.#store.get(key) ?? { value: null, callbacks: [] };
         item.callbacks.push(callback);
+        this.#store.set(key, item);
     }
 
     #dispatchValueChanged(key, value) {
