@@ -1,4 +1,5 @@
 import { Category } from '../model/index.js';
+import { CardCategoryComponent } from './card-category-component.js';
 
 export class SelectorCategoriesComponent extends HTMLElement {
     #shadow;
@@ -9,10 +10,7 @@ export class SelectorCategoriesComponent extends HTMLElement {
     #template = `
         <section class="container-categories">
             <template class="template-card-category">
-                <div class="card-category" data-category-id="">
-                    <header></header>
-                    <img/>
-                </div>
+                <card-category></card-category>
             </template>
         </section>
 
@@ -23,14 +21,6 @@ export class SelectorCategoriesComponent extends HTMLElement {
                 grid-template-columns: repeat(auto-fit, 200px);
                 place-content: center;
                 gap: 1rem;
-            }
-
-            .card-category {
-                border: solid;
-            }
-
-            img {
-                height: 100px;
             }
         </style>
     `;
@@ -62,9 +52,9 @@ export class SelectorCategoriesComponent extends HTMLElement {
         if (this.#selectorModel) {
             this.#selectorModel.categories.forEach(category => {
                 const cloneCard = document.importNode(template.content, true);
-                cloneCard.querySelector('.card-category').setAttribute('data-category-id', category.id);
-                cloneCard.querySelector('header').textContent = category.name;
-                cloneCard.querySelector('img').src = category.image;
+                cloneCard.querySelector('card-category').setAttribute('category-id', category.id);
+                cloneCard.querySelector('card-category').setAttribute('category-name', category.name);
+                cloneCard.querySelector('card-category').setAttribute('category-image', category.image);
                 nContainer.appendChild(cloneCard);
             });
         }
